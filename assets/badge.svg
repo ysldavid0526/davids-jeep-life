@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="David's Jeep Life">
+  <rect width="240" height="240" rx="46" fill="#111111"/>
+  <defs>
+    <path id="t" d="M 46,122 A 74,74 0 0 1 194,122" fill="none"/>
+    <path id="b" d="M 54,122 A 66,66 0 0 0 186,122" fill="none"/>
+  </defs>
+  <circle cx="120" cy="122" r="90" fill="none" stroke="#DCC9A3" stroke-width="2"/>
+  <circle cx="120" cy="122" r="79" fill="none" stroke="#DCC9A3" stroke-width="1" opacity="0.55"/>
+  <text font-family="'Bebas Neue',Impact,sans-serif" font-size="19" letter-spacing="4" fill="#DCC9A3" text-anchor="middle"><textPath href="#t" startOffset="50%">DAVID'S JEEP LIFE</textPath></text>
+  <text font-family="'Montserrat',Arial,sans-serif" font-weight="600" font-size="7.6" letter-spacing="2.4" fill="#DCC9A3" text-anchor="middle"><textPath href="#b" startOffset="50%">EXPLORE MORE · LIVE MORE</textPath></text>
+  <g transform="translate(0,6)" fill="none" stroke="#DCC9A3" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M76 136 L102 102 L119 124 L139 92 L164 130"/>
+    <path d="M139 92 L131 106 L148 106 Z" fill="#DCC9A3" stroke="none"/>
+    <path d="M68 136 L172 136"/>
+  </g>
+  <circle cx="120" cy="80" r="2.4" fill="#DCC9A3"/>
+</svg>

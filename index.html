@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>David's Jeep Life — Explore More. Live More.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css"/>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png"/>
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"/>
+<meta name="theme-color" content="#111111"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="David's Jeep Life — Explore More. Live More."/>
+<meta property="og:description" content="不只是 Jeep——是一種探索世界的生活方式。"/>
+<meta property="og:image" content="assets/og-image.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+</head>
+<body>
+
+<div class="prog" id="prog"></div>
+<header class="nav" id="nav">
+  <a class="b" href="#top"><img src="assets/logo.png" alt="David's Jeep Life"/></a>
+  <nav class="nav-links">
+    <a href="#story">Story</a><a href="#vision">Vision</a><a href="#values">Values</a>
+    <a href="#founder">Founder</a><a href="#share">Share</a><a href="#shop">Select</a>
+  </nav>
+  <div class="nav-right">
+    <button class="cart-btn" id="openCart">CART <span class="cart-count" id="count">0</span></button>
+    <button class="menu-btn" id="openMenu">Menu</button>
+  </div>
+</header>
+
+<div class="menu" id="menu">
+  <button class="mx" id="closeMenu">×</button>
+  <a href="#story">Story</a><a href="#vision">Vision</a><a href="#values">Values</a>
+  <a href="#founder">Founder</a><a href="#share">Share</a><a href="#shop">Select</a><a href="#community">Community</a><a href="account.html">會員</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-bg"><img src="assets/hero.jpg" alt="David's Jeep Life"/></div>
+  <div class="hero-tint"></div>
+  <div class="hero-in">
+    <p class="eyebrow rv">Est. Taiwan → Worldwide</p>
+    <img class="hero-logo rv d1" src="assets/logo.png" alt="David's Jeep Life" style="margin-top:20px"/>
+    <div class="hero-line rv d2">Explore More. Live More.</div>
+    <p class="hero-sub rv d2">不只是 Jeep——是一種探索世界的生活方式。</p>
+    <p class="hero-mini rv d3">Not Just A Jeep. It's A Way Of Life.</p>
+    <div class="hero-cta-row rv d3">
+      <a class="btn-sand" href="#story">探索品牌</a>
+      <a class="btn-ghost" href="shop.html">精選商品</a>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="sec story wrap" id="story">
+  <div class="story-grid">
+    <div>
+      <p class="eyebrow lead-eyebrow rv">Our Story · 品牌故事</p>
+      <h2 class="title rv d1">It Started<br>With A Jeep</h2>
+      <p class="lead rv d2">David's Jeep Life 由創辦人大衛所創立。從一台 Jeep 開始，一路走進山林、海岸、公路與世界各地。</p>
+      <p class="rv d2">在一次次的越野旅程中，我發現真正吸引我的，從來不只是車子本身——而是那些沿途遇見的人、看過的風景、品嚐過的美食，以及每一次突破舒適圈後所獲得的成長。</p>
+      <p class="rv d3">因此，David's Jeep Life 不只是分享 Jeep。更是在分享一種勇於探索、享受生活、追求自由的人生態度。</p>
+    </div>
+    <div class="story-photo rv d2"><img src="assets/story.jpg" alt="越野旅程"/></div>
+  </div>
+</section>
+
+<!-- VISION & MISSION -->
+<section class="sec vm" id="vision">
+  <div class="wrap">
+    <p class="eyebrow rv" style="text-align:center;margin-bottom:50px">Vision & Mission</p>
+    <div class="vm-grid">
+      <div class="vm-block rv d1">
+        <div class="k">品牌願景 · Vision</div>
+        <h3>成為亞洲最具影響力的冒險生活品牌</h3>
+        <div class="vm-rule"></div>
+        <p>透過旅行、越野、露營、美食與探索文化，啟發更多人勇敢追尋自己熱愛的生活。讓每一次出發，都成為改變人生的開始。</p>
+      </div>
+      <div class="vm-block rv d2">
+        <div class="k">品牌使命 · Mission</div>
+        <h3>記錄探索，分享美好，連結世界</h3>
+        <div class="vm-rule"></div>
+        <p>我們透過真實的旅程與體驗，分享值得信任的產品、值得品嚐的美食、值得前往的景點、值得參加的活動。讓更多人找到屬於自己的冒險與生活方式。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="sec values" id="values">
+  <div class="wrap">
+    <div class="val-head">
+      <p class="eyebrow rv">Core Values · 品牌核心價值</p>
+      <h2 class="title rv d1">What We<br>Stand For</h2>
+    </div>
+    <div class="val-grid">
+      <div class="val rv">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 44 L21 7 M37 44 L27 7"/><path d="M24 40 v-5 M24 30 v-5 M24 20 v-5 M24 11 v-3"/></svg>
+        <div class="en">Freedom</div><div class="zh">自由</div>
+        <p>人生不該被限制。選擇自己熱愛的道路。</p>
+      </div>
+      <div class="val rv d1">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 40 L19 13 L28 26 L37 7 L44 40"/><path d="M2 40 L46 40"/></svg>
+        <div class="en">Explore</div><div class="zh">探索</div>
+        <p>保持好奇心。世界永遠比想像中更大。</p>
+      </div>
+      <div class="val rv d2">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="18"/><path d="M15 24 l6 6 l12 -14"/></svg>
+        <div class="en">Authentic</div><div class="zh">真實</div>
+        <p>只分享親身體驗過的人事物。真實，是最有價值的推薦。</p>
+      </div>
+      <div class="val rv d3">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 8 L42 40 L6 40 Z"/><path d="M24 8 L24 40"/><path d="M17 40 L24 28 L31 40"/></svg>
+        <div class="en">Adventure</div><div class="zh">冒險</div>
+        <p>走出舒適圈。才能看見不一樣的風景。</p>
+      </div>
+      <div class="val rv d4">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="13" r="6"/><circle cx="12" cy="35" r="6"/><circle cx="36" cy="35" r="6"/><path d="M21 18 L15 30 M27 18 L33 30 M18 35 L30 35"/></svg>
+        <div class="en">Community</div><div class="zh">連結</div>
+        <p>因共同熱愛而相聚。因信任而一起前行。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="sec founder" id="founder">
+  <div class="wrap founder-grid">
+    <div class="founder-photo rv"><img src="assets/founder.jpg" alt="David Cheng"/></div>
+    <div>
+      <p class="eyebrow rv d1">About The Founder · 關於創辦人</p>
+      <h2 class="title rv d1">David Cheng</h2>
+      <p class="role rv d1">創業家 ｜ 越野玩家 ｜ 旅行探索者</p>
+      <p class="rv d2">我是大衛，一位熱愛探索世界的人。平時經營企業，但只要有機會，我就會開著 Jeep 前往山林、海岸、公路與未知的地方。</p>
+      <p class="rv d2">我相信人生最精彩的時刻，往往發生在離開舒適圈之後。David's Jeep Life 是我記錄人生的方式，也是我與世界分享故事的平台。</p>
+      <p class="rv d3">我希望透過自己的旅程，讓更多人發現：生活不只是工作與忙碌，而是擁有探索世界的勇氣。</p>
+      <div class="sig rv d3">— David</div>
+    </div>
+  </div>
+</section>
+
+<!-- SHARE PILLARS -->
+<section class="sec share" id="share">
+  <div class="wrap">
+    <div class="share-head">
+      <p class="eyebrow rv">What We Share · 我們分享什麼</p>
+      <h2 class="title rv d1">Five Ways<br>To Live More</h2>
+    </div>
+    <div class="pillars">
+      <div class="pillar rv">
+        <svg viewBox="0 0 56 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><rect x="4" y="7" width="48" height="26" rx="5"/><path d="M14 11v18 M21 11v18 M28 11v18 M35 11v18 M42 11v18"/></svg>
+        <h3>Jeep Life</h3><ul><li>越野文化</li><li>改裝分享</li><li>探險旅程</li></ul>
+      </div>
+      <div class="pillar rv d1">
+        <svg viewBox="0 0 48 44" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M24 6 L42 40 L6 40 Z"/><path d="M24 6 L24 40"/><path d="M17 40 L24 28 L31 40"/></svg>
+        <h3>Adventure</h3><ul><li>露營生活</li><li>戶外體驗</li><li>自駕旅行</li></ul>
+      </div>
+      <div class="pillar rv d2">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round" stroke-linecap="round"><circle cx="24" cy="24" r="19"/><path d="M24 5 L28 24 L24 43 L20 24 Z M5 24 L24 20 L43 24 L24 28 Z" fill="currentColor" stroke="none"/></svg>
+        <h3>Travel</h3><ul><li>台灣秘境</li><li>海外探索</li><li>深度旅遊</li></ul>
+      </div>
+      <div class="pillar rv d3">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round" stroke-linecap="round"><path d="M16 6 v8 a8 8 0 0 0 16 0 V6"/><path d="M24 22 V42 M16 42 h16"/></svg>
+        <h3>Food</h3><ul><li>特色餐廳</li><li>在地美食</li><li>職人品牌</li></ul>
+      </div>
+      <div class="pillar rv d4">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round" stroke-linecap="round"><path d="M24 5 l5 13 l14 0 l-11 8 l4 14 l-12 -8 l-12 8 l4 -14 l-11 -8 l14 0 Z"/></svg>
+        <h3>Select</h3><ul><li>大衛親自推薦</li><li>戶外用品</li><li>生活選物</li><li>特色商品</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOP / SELECT -->
+<section class="sec shop" id="shop">
+  <div class="wrap">
+    <div class="shop-head">
+      <p class="eyebrow rv">Select · 大衛精選</p>
+      <h2 class="title rv d1">The Kit</h2>
+      <p class="sub rv d1">親身體驗、值得信任——每一件都是 David's Jeep Life 的隨行裝備。</p>
+    </div>
+    <div class="grid" id="grid"></div>
+    <p class="ship-line rv">全館滿 <b>NT$2,000</b> 免運 · Taiwan → Worldwide</p>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section class="sec community" id="community">
+  <div class="wrap">
+    <p class="eyebrow rv">Community · 連結</p>
+    <h2 class="rv d1">Join The Journey</h2>
+    <p class="rv d2">因共同熱愛而相聚，因信任而一起前行。追蹤每一次出發，和我們一起探索更多、活得更多。</p>
+    <a class="btn-sand rv d3" href="https://instagram.com/davidjeeplife" target="_blank" rel="noopener">追蹤 @davidjeeplife</a>
+  </div>
+</section>
+
+<!-- JOURNEY GALLERY -->
+<section class="sec journey" id="journey">
+  <div class="wrap">
+    <div class="journey-head">
+      <p class="eyebrow rv">The Journey · 旅程紀錄</p>
+      <h2 class="title rv d1">On The Trail</h2>
+      <p class="journey-sub rv d1">每一次出發，都是一段值得記錄的旅程。</p>
+    </div>
+    <div class="journey-grid">
+      <figure class="journey-item rv"><img src="assets/journey-1.jpg" alt="越野旅程 1" loading="lazy"/></figure>
+      <figure class="journey-item rv d1"><img src="assets/journey-2.jpg" alt="越野旅程 2" loading="lazy"/></figure>
+      <figure class="journey-item rv d2"><img src="assets/journey-3.jpg" alt="越野旅程 3" loading="lazy"/></figure>
+      <figure class="journey-item rv"><img src="assets/journey-4.jpg" alt="越野旅程 4" loading="lazy"/></figure>
+      <figure class="journey-item rv d1"><img src="assets/journey-5.jpg" alt="越野旅程 5" loading="lazy"/></figure>
+      <figure class="journey-item rv d2"><img src="assets/journey-6.jpg" alt="越野旅程 6" loading="lazy"/></figure>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="manifesto" id="manifesto">
+  <div class="manifesto-bg"><img src="assets/manifesto.jpg" alt="探索"/></div>
+  <div class="manifesto-tint"></div>
+  <div class="manifesto-in">
+    <h2 class="rv">世界很大<br>還有無數風景<br>等待被發現</h2>
+    <p class="rv d1">David's Jeep Life 記錄每一次出發，分享每一段旅程，推薦每一個值得體驗的人事物。我們相信，真正重要的，從來不是目的地——而是一路上所經歷的故事。</p>
+    <div class="big rv d2">The Journey Is The Destination.</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot" id="footer">
+  <div class="wrap">
+    <img class="brand-logo" src="assets/logo.png" alt="David's Jeep Life"/>
+    <div class="fw">David's Jeep Life</div>
+    <div class="ft">Explore More. Live More.</div>
+    <div class="rule"><span class="seg"></span>Taiwan <span class="peak">→</span> Worldwide<span class="seg"></span></div>
+    <p class="mini">Not Just A Jeep. It's A Way Of Life.</p>
+    <p class="contact"><a href="https://instagram.com/davidjeeplife" target="_blank" rel="noopener">@davidjeeplife</a> · <a href="mailto:david@davidjeep.life">david@davidjeep.life</a></p>
+    <nav><a href="#story">Story</a><a href="#vision">Vision</a><a href="#values">Values</a><a href="#founder">Founder</a><a href="#share">Share</a><a href="#shop">Select</a><a href="#community">Community</a></nav>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="購物車">
+  <div class="dh"><h3>Cart · 購物車</h3><button class="x" id="closeCart" aria-label="關閉">×</button></div>
+  <div class="db" id="cartItems"></div>
+  <div class="df"><div class="sr"><span class="l">小計 Subtotal</span><span class="v" id="subtotal">NT$0</span></div><p class="sn" id="shipNote">再買 <b>NT$2,000</b> 即可免運</p><button class="checkout" id="checkout" disabled>前往結帳</button></div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script src="js/store.js" defer></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>

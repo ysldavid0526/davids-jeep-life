@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>商品 · David's Jeep Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css"/>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png"/>
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"/>
+<meta name="theme-color" content="#111111"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="David's Jeep Life"/>
+<meta property="og:description" content="不只是 Jeep——是一種探索世界的生活方式。"/>
+<meta property="og:image" content="assets/og-image.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+</head>
+<body>
+
+<header class="nav solid" id="nav">
+  <a class="b" href="index.html"><img src="assets/logo.png" alt="David's Jeep Life"/></a>
+  <nav class="nav-links">
+    <a href="index.html">首頁</a><a href="shop.html">Shop</a><a href="index.html#community">Community</a>
+  </nav>
+  <div class="nav-right">
+    <button class="cart-btn" id="openCart">CART <span class="cart-count" id="count">0</span></button>
+    <button class="acct-btn" id="acctBtn">登入 / 註冊</button>
+    <button class="menu-btn" id="openMenu">Menu</button>
+  </div>
+</header>
+
+<div class="menu" id="menu">
+  <button class="mx" id="closeMenu">×</button>
+  <a href="index.html">首頁</a><a href="shop.html">Shop</a><a href="account.html">會員</a><a href="index.html#community">Community</a>
+</div>
+
+<section class="pdp" id="pdp">
+  <div class="wrap pdp-grid" id="pdpGrid">
+    <div class="pdp-media-col">
+      <div class="pdp-media"><img id="pdpImg" src="" alt=""/></div>
+      <div class="pdp-thumbs" id="pdpThumbs"></div>
+    </div>
+    <div class="pdp-info">
+      <a class="pdp-back" href="shop.html">← 返回商品</a>
+      <span class="pdp-sku" id="pdpSku"></span>
+      <h1 class="pdp-title" id="pdpName"></h1>
+      <div class="pdp-price" id="pdpPrice"></div>
+      <p class="pdp-desc" id="pdpDesc"></p>
+      <div class="pdp-size" id="pdpSizeWrap" hidden>
+        <span class="pdp-size-label">尺寸 Size</span>
+        <div class="pdp-size-opts" id="pdpSizes"></div>
+      </div>
+      <div class="pdp-qty">數量
+        <div class="qbox"><button id="qMinus" aria-label="減少">−</button><span id="qty">1</span><button id="qPlus" aria-label="增加">+</button></div>
+      </div>
+      <button class="pdp-add" id="pdpAdd">加入購物車</button>
+      <p class="pdp-ship">全館滿 NT$2,000 免運 · Taiwan → Worldwide</p>
+    </div>
+  </div>
+
+  <div class="wrap pdp-detail" id="pdpDetail">
+    <div class="pdp-intro-block">
+      <p class="eyebrow">About This Item · 商品介紹</p>
+      <p class="pdp-intro" id="pdpIntro"></p>
+    </div>
+    <div class="pdp-features" id="pdpFeatures"></div>
+    <div class="pdp-specs-block">
+      <h2 class="pdp-specs-title">規格 Spec</h2>
+      <table class="pdp-specs"><tbody id="pdpSpecs"></tbody></table>
+    </div>
+  </div>
+</section>
+
+<footer class="foot" id="footer">
+  <div class="wrap">
+    <img class="brand-logo" src="assets/logo.png" alt="David's Jeep Life"/>
+    <div class="fw">David's Jeep Life</div>
+    <div class="ft">Explore More. Live More.</div>
+    <div class="rule"><span class="seg"></span>Taiwan <span class="peak">→</span> Worldwide<span class="seg"></span></div>
+    <p class="mini">Not Just A Jeep. It's A Way Of Life.</p>
+    <p class="contact"><a href="https://instagram.com/davidjeeplife" target="_blank" rel="noopener">@davidjeeplife</a> · <a href="mailto:david@davidjeep.life">david@davidjeep.life</a></p>
+    <nav><a href="index.html">首頁</a><a href="shop.html">Shop</a><a href="account.html">會員</a></nav>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="購物車">
+  <div class="dh"><h3>Cart · 購物車</h3><button class="x" id="closeCart" aria-label="關閉">×</button></div>
+  <div class="db" id="cartItems"></div>
+  <div class="df"><div class="sr"><span class="l">小計 Subtotal</span><span class="v" id="subtotal">NT$0</span></div><p class="sn" id="shipNote">再買 <b>NT$2,000</b> 即可免運</p><button class="checkout" id="checkout" disabled>前往結帳</button></div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script src="js/store.js" defer></script>
+<script src="js/product.js" defer></script>
+</body>
+</html>

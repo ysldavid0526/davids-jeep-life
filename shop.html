@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shop · David's Jeep Life — Explore More. Live More.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css"/>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png"/>
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"/>
+<meta name="theme-color" content="#111111"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="David's Jeep Life — 官方商城"/>
+<meta property="og:description" content="親身體驗、值得信任——每一件都是 David's Jeep Life 的隨行裝備。"/>
+<meta property="og:image" content="assets/og-image.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+</head>
+<body>
+
+<header class="nav solid" id="nav">
+  <a class="b" href="index.html"><img src="assets/logo.png" alt="David's Jeep Life"/></a>
+  <nav class="nav-links">
+    <a href="index.html">首頁</a><a href="index.html#story">Story</a><a href="shop.html" class="active">Shop</a><a href="index.html#community">Community</a>
+  </nav>
+  <div class="nav-right">
+    <button class="cart-btn" id="openCart">CART <span class="cart-count" id="count">0</span></button>
+    <button class="acct-btn" id="acctBtn">登入 / 註冊</button>
+    <button class="menu-btn" id="openMenu">Menu</button>
+  </div>
+</header>
+
+<div class="menu" id="menu">
+  <button class="mx" id="closeMenu">×</button>
+  <a href="index.html">首頁</a><a href="index.html#story">Story</a><a href="shop.html">Shop</a>
+  <a href="index.html#founder">Founder</a><a href="index.html#community">Community</a><a href="account.html">會員</a>
+</div>
+
+<!-- SHOP HEADER -->
+<header class="shop-hero">
+  <img class="brand-logo" src="assets/logo.png" alt="David's Jeep Life"/>
+  <p class="eyebrow">Official Store · 官方商城</p>
+  <h1 class="shop-hero-title">The Kit</h1>
+  <p class="shop-hero-sub">親身體驗、值得信任——每一件都是 David's Jeep Life 的隨行裝備。</p>
+</header>
+
+<!-- PRODUCTS -->
+<section class="sec shop-page">
+  <div class="wrap">
+    <div class="grid" id="grid"></div>
+    <p class="ship-line">全館滿 <b>NT$2,000</b> 免運 · Taiwan → Worldwide</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot" id="footer">
+  <div class="wrap">
+    <img class="brand-logo" src="assets/logo.png" alt="David's Jeep Life"/>
+    <div class="fw">David's Jeep Life</div>
+    <div class="ft">Explore More. Live More.</div>
+    <div class="rule"><span class="seg"></span>Taiwan <span class="peak">→</span> Worldwide<span class="seg"></span></div>
+    <p class="mini">Not Just A Jeep. It's A Way Of Life.</p>
+    <p class="contact"><a href="https://instagram.com/davidjeeplife" target="_blank" rel="noopener">@davidjeeplife</a> · <a href="mailto:david@davidjeep.life">david@davidjeep.life</a></p>
+    <nav><a href="index.html">首頁</a><a href="shop.html">Shop</a><a href="index.html#story">Story</a><a href="index.html#community">Community</a></nav>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="購物車">
+  <div class="dh"><h3>Cart · 購物車</h3><button class="x" id="closeCart" aria-label="關閉">×</button></div>
+  <div class="db" id="cartItems"></div>
+  <div class="df"><div class="sr"><span class="l">小計 Subtotal</span><span class="v" id="subtotal">NT$0</span></div><p class="sn" id="shipNote">再買 <b>NT$2,000</b> 即可免運</p><button class="checkout" id="checkout" disabled>前往結帳</button></div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script src="js/store.js" defer></script>
+<script src="js/shop.js" defer></script>
+</body>
+</html>
