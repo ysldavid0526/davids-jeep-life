@@ -2,6 +2,7 @@
    依賴 store.js（須先載入）：PRODUCTS / setupCart / addToCart / productCardHTML / closeCartDrawer
 */
 setupCart();
+updateAuthUI();
 
 // 商品列表（精選商品區）
 const grid = document.getElementById('grid');
