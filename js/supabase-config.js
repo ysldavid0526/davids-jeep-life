@@ -37,6 +37,7 @@ window.djlSyncUser = async function (session) {
     localStorage.removeItem('djl_user');
   }
   if (typeof updateAuthUI === 'function') updateAuthUI();
+  if (typeof loadFavorites === 'function') loadFavorites();
   if (typeof window.onDjlAuthChange === 'function') window.onDjlAuthChange();
 };
 

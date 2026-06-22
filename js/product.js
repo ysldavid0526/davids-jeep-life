@@ -86,4 +86,8 @@ if (!p) {
     if (hasSizes && !selectedSize) { toast('請先選擇尺寸'); return; }
     addToCart(p.id, qty, selectedSize);
   };
+
+  // 收藏鈕（綁定此商品；點擊由 store.js 的全站委派處理）
+  const favBtn = document.getElementById('pdpFav');
+  if (favBtn) { favBtn.dataset.fav = p.id; refreshFavUI(); }
 }

@@ -11,6 +11,7 @@ if (grid) {
     const b = e.target.closest('.add');
     if (b) addToCart(b.dataset.id);
   });
+  refreshFavUI();
 }
 
 // 行動版選單

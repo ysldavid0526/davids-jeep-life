@@ -99,10 +99,14 @@ function toast(msg) {
   _toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
+/* 愛心圖示（收藏鈕共用） */
+const HEART_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.6 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>';
+
 /* 商品卡片 HTML（首頁與購物頁共用；圖片與標題可點進個別商品頁） */
 function productCardHTML(p, revealClass = '') {
   const href = `product.html?id=${p.id}`;
   return `<article class="card ${revealClass}">` +
+    `<button class="card-fav" data-fav="${p.id}" aria-label="加入收藏">${HEART_SVG}</button>` +
     `<a class="card-link" href="${href}"><div class="card-media"><span class="sku">${p.id}</span>` +
     `<img src="${p.img}" alt="${p.name}" loading="lazy"/></div></a>` +
     `<div class="card-body"><a class="card-link" href="${href}"><h3>${p.name}</h3></a><p>${p.desc}</p>` +
@@ -188,9 +192,25 @@ function setupCart() {
     saveCart(); renderCart();
   });
 
-  if (checkout) checkout.onclick = () => {
+  if (checkout) checkout.onclick = async () => {
     if (!cartQty()) return;
-    toast('感謝下單！小計 ' + NT(cartSubtotal()) + '（展示用）');
+    const u = getUser();
+    if (!u) {
+      toast('請先登入會員，即可下單並保留訂購紀錄');
+      setTimeout(() => location.href = 'account.html', 1100);
+      return;
+    }
+    checkout.disabled = true;
+    const items = Object.keys(cart).map(k => {
+      const { id, size, product: p } = parseKey(k);
+      return p ? { id, name: p.name, size, qty: cart[k], price: p.price } : null;
+    }).filter(Boolean);
+    const subtotal = cartSubtotal();
+    const { error } = await sb.from('orders').insert({ user_id: u.id, items, subtotal, status: '展示訂單' });
+    if (error) { toast('下單失敗，請稍後再試'); checkout.disabled = false; return; }
+    cart = {}; saveCart(); renderCart();
+    close();
+    toast('訂單已成立！可至會員中心查看（展示訂單・未收款）');
   };
 
   window.addToCart = function (id, n = 1, size = '') {
@@ -216,3 +236,44 @@ function updateAuthUI() {
   btn.textContent = u ? ('HI, ' + (u.name || u.email.split('@')[0])) : '登入 / 註冊';
   btn.onclick = () => location.href = 'account.html';
 }
+
+/* ── 收藏 Favorites（存在 Supabase favorites 表；未登入則提示登入） ── */
+let _favs = new Set();
+async function loadFavorites() {
+  _favs = new Set();
+  const u = getUser();
+  if (u && window.sb) {
+    try {
+      const { data } = await sb.from('favorites').select('product_id').eq('user_id', u.id);
+      if (data) data.forEach(r => _favs.add(r.product_id));
+    } catch (e) { /* favorites 表可能尚未建立 */ }
+  }
+  refreshFavUI();
+}
+function isFav(id) { return _favs.has(id); }
+function refreshFavUI() {
+  document.querySelectorAll('[data-fav]').forEach(b => {
+    if (b.dataset.fav) b.classList.toggle('on', _favs.has(b.dataset.fav));
+  });
+}
+async function toggleFavorite(id) {
+  const u = getUser();
+  if (!u) { toast('請先登入會員，才能收藏'); setTimeout(() => location.href = 'account.html', 1000); return; }
+  if (!window.sb) return;
+  if (_favs.has(id)) {
+    _favs.delete(id); refreshFavUI();
+    await sb.from('favorites').delete().eq('user_id', u.id).eq('product_id', id);
+    toast('已移除收藏');
+  } else {
+    _favs.add(id); refreshFavUI();
+    await sb.from('favorites').insert({ user_id: u.id, product_id: id });
+    toast('已加入收藏 ♥');
+  }
+}
+/* 全站委派：任何帶 [data-fav] 的愛心鈕（商品卡、商品頁）都能用 */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-fav]');
+  if (!b || !b.dataset.fav) return;
+  e.preventDefault();
+  toggleFavorite(b.dataset.fav);
+});

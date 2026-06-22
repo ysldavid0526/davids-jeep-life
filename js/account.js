@@ -32,7 +32,10 @@ function zhErr(msg) {
 async function doRegister(name, email, phone, pw) {
   const { data, error } = await sb.auth.signUp({
     email, password: pw,
-    options: { data: { name, phone } },
+    options: {
+      data: { name, phone },
+      emailRedirectTo: location.origin + location.pathname,  // 確認信點完導回「這一頁」（會員頁），不依賴 Site URL
+    },
   });
   if (error) return zhErr(error.message);
   if (!data.session) return '__CONFIRM__';   // 開啟 Email 驗證時,需先收信確認
@@ -68,8 +71,16 @@ function renderMember() {
       <div class="row"><span>手機</span><span>${u.phone || '—'}</span></div>
       <div class="row"><span>Email</span><span>${u.email}</span></div>
       <div class="row"><span>加入日期</span><span>${u.since || '—'}</span></div>
-      <div class="row"><span>訂單紀錄</span><span>即將推出</span></div>
-      <div class="row"><span>收藏清單</span><span>即將推出</span></div>
+
+      <div class="member-section">
+        <h3>訂購紀錄</h3>
+        <div id="ordersBox" class="orders-box"><p class="member-empty">載入中…</p></div>
+      </div>
+      <div class="member-section">
+        <h3>收藏清單</h3>
+        <div id="favBox" class="fav-box"><p class="member-empty">載入中…</p></div>
+      </div>
+
       <button class="member-edit" id="editBtn">編輯資料</button>
       <button class="logout" id="logoutBtn">登出</button>
     </div>`;
@@ -79,6 +90,46 @@ function renderMember() {
     await djlSyncUser(null);
     render(); toast('已登出');
   };
+  loadOrders();
+  loadFavs();
+}
+
+// 訂購紀錄（從 Supabase orders 表讀取）
+async function loadOrders() {
+  const u = getUser(); if (!u) return;
+  const box = document.getElementById('ordersBox'); if (!box) return;
+  const { data, error } = await sb.from('orders').select('*').eq('user_id', u.id).order('created_at', { ascending: false });
+  if (error || !data || !data.length) { box.innerHTML = '<p class="member-empty">目前還沒有訂單</p>'; return; }
+  box.innerHTML = data.map(o => {
+    const date = o.created_at ? new Date(o.created_at).toLocaleDateString('zh-TW') : '';
+    const items = (o.items || []).map(it => `${it.name}${it.size ? '（' + it.size + '）' : ''} ×${it.qty}`).join('、');
+    return `<div class="order-card">
+        <div class="order-top"><span class="order-date">${date}</span><span class="order-status">${o.status || '展示訂單'}</span></div>
+        <p class="order-items">${items}</p>
+        <div class="order-sub">小計 <b>${NT(o.subtotal || 0)}</b></div>
+      </div>`;
+  }).join('');
+}
+
+// 收藏清單（從 Supabase favorites 表讀取，對照商品資料顯示）
+async function loadFavs() {
+  const u = getUser(); if (!u) return;
+  const box = document.getElementById('favBox'); if (!box) return;
+  const { data, error } = await sb.from('favorites').select('product_id, created_at').eq('user_id', u.id).order('created_at', { ascending: false });
+  const list = error ? [] : (data || []).map(r => findProduct(r.product_id)).filter(Boolean);
+  if (!list.length) { box.innerHTML = '<p class="member-empty">還沒有收藏的商品</p>'; return; }
+  box.innerHTML = list.map(p => `
+      <div class="fav-card">
+        <a href="product.html?id=${p.id}"><img src="${p.img}" alt="${p.name}"/></a>
+        <div class="fav-info"><a href="product.html?id=${p.id}"><h4>${p.name}</h4></a><span class="fav-price">${NT(p.price)}</span></div>
+        <button class="fav-remove" data-rm="${p.id}" aria-label="移除收藏">×</button>
+      </div>`).join('');
+  box.querySelectorAll('[data-rm]').forEach(b => b.onclick = async () => {
+    await sb.from('favorites').delete().eq('user_id', u.id).eq('product_id', b.dataset.rm);
+    if (typeof _favs !== 'undefined' && _favs.delete) _favs.delete(b.dataset.rm);
+    toast('已移除收藏');
+    loadFavs();
+  });
 }
 
 function renderEdit() {
@@ -109,6 +160,33 @@ function renderEdit() {
     if (err) { document.getElementById('editMsg').textContent = err; return; }
     toast('資料已更新');
     renderMember();
+  };
+}
+
+function renderConfirmSent(email) {
+  root.innerHTML =
+    BADGE +
+    `<div class="member confirm-sent">
+      <div class="confirm-icon">✉️</div>
+      <h2>註冊成功</h2>
+      <p class="confirm-lead">確認信已寄到</p>
+      <p class="email">${email}</p>
+      <p class="confirm-desc">請打開信件、點擊裡面的<b>確認連結</b>完成驗證，就能登入囉。</p>
+      <p class="confirm-hint">沒收到？請稍等 1～2 分鐘，並記得看看「垃圾郵件 / 促銷內容」匣。</p>
+      <button class="auth-submit" id="goLogin">我已完成驗證，前往登入</button>
+      <button class="member-edit" id="resendBtn">重新寄送確認信</button>
+      <p class="auth-msg" id="confirmMsg"></p>
+    </div>`;
+  document.getElementById('goLogin').onclick = () => renderAuth('login');
+  document.getElementById('resendBtn').onclick = async e => {
+    e.target.disabled = true;
+    const m = document.getElementById('confirmMsg');
+    const { error } = await sb.auth.resend({
+      type: 'signup', email,
+      options: { emailRedirectTo: location.origin + location.pathname },
+    });
+    m.textContent = error ? zhErr(error.message) : '確認信已重新寄出 ✓';
+    e.target.disabled = false;
   };
 }
 

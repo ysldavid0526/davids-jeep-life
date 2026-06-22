@@ -289,6 +289,52 @@
   .member-edit{margin-top:22px;width:100%;cursor:pointer;font-family:var(--head);font-size:19px;letter-spacing:.08em;color:var(--ink);background:var(--sand);border:none;padding:12px;border-radius:3px;transition:.2s}
   .member-edit:hover{background:#fff}
 
+  /* 註冊成功・請收信畫面 */
+  .confirm-sent .confirm-icon{font-size:46px;line-height:1;margin-bottom:10px}
+  .confirm-sent .confirm-lead{font-size:13px;color:var(--gray);margin:4px 0 2px}
+  .confirm-sent .email{margin:0 0 16px}
+  .confirm-sent .confirm-desc{font-size:14px;color:#cfcfca;line-height:1.8;margin:0 0 10px}
+  .confirm-sent .confirm-desc b{color:var(--sand);font-weight:600}
+  .confirm-sent .confirm-hint{font-size:12px;color:var(--gray);line-height:1.7;margin:0 0 22px}
+  .confirm-sent .auth-msg{color:#9cc79c;margin-top:12px}
+
+  /* 收藏愛心鈕（商品卡） */
+  .card{position:relative}
+  .card-fav{position:absolute;top:10px;right:10px;z-index:3;width:38px;height:38px;display:grid;place-items:center;border:none;border-radius:50%;background:rgba(13,13,13,.55);backdrop-filter:blur(4px);cursor:pointer;transition:.2s}
+  .card-fav svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.7}
+  .card-fav:hover{background:rgba(13,13,13,.8)}
+  .card-fav:hover svg{stroke:var(--sand)}
+  .card-fav.on svg{fill:var(--sand);stroke:var(--sand)}
+
+  /* 收藏愛心鈕（商品頁） */
+  .pdp-actions{display:flex;align-items:center;gap:12px;max-width:340px}
+  .pdp-actions .pdp-add{flex:1;max-width:none}
+  .pdp-fav{flex:none;width:54px;height:54px;display:grid;place-items:center;cursor:pointer;background:transparent;border:1px solid var(--line-strong);border-radius:2px;transition:.2s}
+  .pdp-fav svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:1.7}
+  .pdp-fav:hover{border-color:var(--sand)}
+  .pdp-fav:hover svg{stroke:var(--sand)}
+  .pdp-fav.on{border-color:var(--sand)}
+  .pdp-fav.on svg{fill:var(--sand);stroke:var(--sand)}
+
+  /* 會員中心：訂購紀錄 / 收藏清單 */
+  .member-section{margin-top:26px;text-align:left}
+  .member-section h3{font-family:var(--head);font-weight:400;font-size:22px;letter-spacing:.04em;margin:0 0 12px;color:#fff}
+  .member-empty{font-size:13px;color:var(--gray);padding:14px 0;text-align:center}
+  .order-card{border:1px solid var(--line);border-radius:4px;padding:14px;margin-bottom:10px}
+  .order-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .order-date{font-size:12px;color:var(--gray)}
+  .order-status{font-size:10.5px;font-weight:600;letter-spacing:.1em;color:var(--sand);border:1px solid var(--sand-deep);border-radius:20px;padding:3px 10px}
+  .order-items{font-size:13px;color:#cfcfca;line-height:1.7;margin:0 0 8px}
+  .order-sub{font-size:13px;color:var(--gray)}
+  .order-sub b{color:#fff;font-size:15px}
+  .fav-card{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:4px;padding:10px;margin-bottom:10px}
+  .fav-card img{width:56px;height:56px;object-fit:cover;border-radius:3px;background:var(--char2)}
+  .fav-info{flex:1;min-width:0}
+  .fav-info h4{font-family:var(--head);font-weight:400;font-size:18px;line-height:1.1;margin:0 0 4px;color:#fff}
+  .fav-price{font-size:13px;color:var(--sand)}
+  .fav-remove{flex:none;width:30px;height:30px;border:none;background:none;color:var(--gray);font-size:20px;cursor:pointer;border-radius:50%;transition:.2s}
+  .fav-remove:hover{color:#fff;background:var(--line)}
+
   /* 手機底部導覽列 */
   .tabbar{display:none}
   @media(max-width:600px){
