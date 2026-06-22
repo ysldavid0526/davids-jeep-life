@@ -192,26 +192,7 @@ function setupCart() {
     saveCart(); renderCart();
   });
 
-  if (checkout) checkout.onclick = async () => {
-    if (!cartQty()) return;
-    const u = getUser();
-    if (!u) {
-      toast('請先登入會員，即可下單並保留訂購紀錄');
-      setTimeout(() => location.href = 'account.html', 1100);
-      return;
-    }
-    checkout.disabled = true;
-    const items = Object.keys(cart).map(k => {
-      const { id, size, product: p } = parseKey(k);
-      return p ? { id, name: p.name, size, qty: cart[k], price: p.price } : null;
-    }).filter(Boolean);
-    const subtotal = cartSubtotal();
-    const { error } = await sb.from('orders').insert({ user_id: u.id, items, subtotal, status: '展示訂單' });
-    if (error) { toast('下單失敗，請稍後再試'); checkout.disabled = false; return; }
-    cart = {}; saveCart(); renderCart();
-    close();
-    toast('訂單已成立！可至會員中心查看（展示訂單・未收款）');
-  };
+  if (checkout) checkout.onclick = () => { close(); openCheckout(); };
 
   window.addToCart = function (id, n = 1, size = '') {
     const key = cartKey(id, size);
@@ -221,6 +202,119 @@ function setupCart() {
   };
 
   renderCart();
+}
+
+/* ── 結帳：填收件資訊 → 建立展示訂單（不收款） ── */
+function genOrderNo() {
+  const d = new Date();
+  const ymd = '' + d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+  return 'DJL-' + ymd + '-' + String(Math.floor(1000 + Math.random() * 9000));
+}
+function openCheckout() {
+  if (!cartQty()) return;
+  const u = getUser();
+  if (!u) { toast('請先登入會員，即可下單並保留訂購紀錄'); setTimeout(() => location.href = 'account.html', 1100); return; }
+
+  const items = Object.keys(cart).map(k => {
+    const { id, size, product: p } = parseKey(k);
+    return p ? { id, name: p.name, size, qty: cart[k], price: p.price } : null;
+  }).filter(Boolean);
+  const subtotal = cartSubtotal();
+  const esc = s => (s || '').replace(/"/g, '&quot;');
+
+  let ov = document.getElementById('coModal');
+  if (!ov) { ov = document.createElement('div'); ov.id = 'coModal'; ov.className = 'co-modal'; document.body.appendChild(ov); }
+  const itemsHTML = items.map(it =>
+    `<div class="co-li"><span>${it.name}${it.size ? '（' + it.size + '）' : ''} ×${it.qty}</span><span>${NT(it.price * it.qty)}</span></div>`).join('');
+  ov.innerHTML =
+    `<div class="co-scrim" id="coScrim"></div>
+     <div class="co-card">
+       <div class="co-head"><h3>結帳・收件資訊</h3><button class="x" id="coClose" aria-label="關閉">×</button></div>
+       <div class="co-body">
+         <div class="co-summary">${itemsHTML}
+           <div class="co-li co-total"><span>小計</span><span>${NT(subtotal)}</span></div>
+           <div class="co-li"><span>運費</span><span>${subtotal >= FREE ? '免運 ✓' : '結帳時計算'}</span></div>
+         </div>
+         <form id="coForm" class="co-form">
+           <div><label>收件人 *</label><input id="co_name" type="text" value="${esc(u.name)}" required></div>
+           <div><label>手機 *</label><input id="co_phone" type="tel" value="${esc(u.phone)}" required></div>
+           <div><label>配送方式</label><input type="text" value="宅配到府" readonly class="co-readonly"></div>
+           <div><label>配送地址 *</label><input id="co_addr" type="text" placeholder="例：台北市信義區市府路 1 號" required></div>
+           <p class="co-note">這是展示用訂單，不會真的收款或出貨。</p>
+           <button type="submit" class="co-submit">確認下單</button>
+           <button type="button" class="co-back" id="coBack">返回購物車</button>
+         </form>
+       </div>
+     </div>`;
+  ov.classList.add('open');
+  const closeCO = () => ov.classList.remove('open');
+  document.getElementById('coClose').onclick = closeCO;
+  document.getElementById('coScrim').onclick = closeCO;
+  document.getElementById('coBack').onclick = closeCO;
+  document.getElementById('coForm').onsubmit = async e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('.co-submit');
+    btn.disabled = true;
+    const order = {
+      user_id: u.id,
+      order_no: genOrderNo(),
+      items, subtotal,
+      recipient: document.getElementById('co_name').value.trim(),
+      phone: document.getElementById('co_phone').value.trim(),
+      address: document.getElementById('co_addr').value.trim(),
+      shipping_method: '宅配到府',
+      status: '訂單成立',
+    };
+    const { error } = await sb.from('orders').insert(order);
+    if (error) { toast('下單失敗，請稍後再試'); btn.disabled = false; return; }
+    cart = {}; saveCart(); renderCart();
+    closeCO();
+    if (window.closeCartDrawer) window.closeCartDrawer();
+    showOrderSuccess(order);
+  };
+}
+
+/* 預計送達：下單後 3～5 個工作天（展示用） */
+function estDeliveryText(fromDate) {
+  const base = fromDate ? new Date(fromDate) : new Date();
+  const fmt = ms => { const d = new Date(base.getTime() + ms); return (d.getMonth() + 1) + '/' + d.getDate(); };
+  return fmt(3 * 864e5) + '～' + fmt(5 * 864e5);
+}
+
+/* 訂單成立確認畫面（下單後彈出） */
+function showOrderSuccess(o) {
+  let ov = document.getElementById('coModal');
+  if (!ov) { ov = document.createElement('div'); ov.id = 'coModal'; ov.className = 'co-modal'; document.body.appendChild(ov); }
+  const itemsHTML = (o.items || []).map(it => {
+    const p = findProduct(it.id);
+    const img = p ? p.img : '';
+    return `<div class="os-li"><img src="${img}" alt=""/><div class="os-li-info"><span class="os-li-name">${it.name}${it.size ? '（' + it.size + '）' : ''}</span><span class="os-li-meta">×${it.qty}　${NT(it.price * it.qty)}</span></div></div>`;
+  }).join('');
+  ov.innerHTML =
+    `<div class="co-scrim" id="osScrim"></div>
+     <div class="co-card os-card">
+       <div class="co-body">
+         <div class="os-check">✓</div>
+         <h3 class="os-title">訂單成立！</h3>
+         <p class="os-no">${o.order_no || ''}</p>
+         <div class="os-block">
+           <div class="os-row"><span>配送方式</span><span>${o.shipping_method || '宅配到府'}</span></div>
+           <div class="os-row"><span>收件人</span><span>${o.recipient || ''}　${o.phone || ''}</span></div>
+           <div class="os-row"><span>配送地址</span><span>${o.address || ''}</span></div>
+           <div class="os-row os-eta"><span>預計送達</span><span>${estDeliveryText()}</span></div>
+         </div>
+         <div class="os-items">${itemsHTML}
+           <div class="os-total"><span>小計</span><span>${NT(o.subtotal || 0)}</span></div>
+         </div>
+         <p class="co-note os-note">展示用訂單，不會真的收款或出貨。可至會員中心追蹤配送狀況。</p>
+         <a class="co-submit os-link" href="account.html">查看我的訂單</a>
+         <button class="co-back" id="osClose">繼續逛逛</button>
+       </div>
+     </div>`;
+  ov.classList.add('open');
+  const close = () => ov.classList.remove('open');
+  document.getElementById('osScrim').onclick = close;
+  document.getElementById('osClose').onclick = close;
 }
 
 /* ── 會員（展示版：帳號暫存瀏覽器 localStorage；之後可改接 Supabase，介面不變） ── */

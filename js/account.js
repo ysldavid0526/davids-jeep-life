@@ -94,6 +94,22 @@ function renderMember() {
   loadFavs();
 }
 
+// 配送進度時間軸
+const ORDER_STAGES = ['訂單成立', '備貨中', '已出貨', '已送達'];
+const STAGE_NOTE = {
+  '訂單成立': '我們已收到您的訂單，正在為您安排備貨。',
+  '備貨中': '商品正在打包中，即將出貨。',
+  '已出貨': '包裹已交給物流，配送中。',
+  '已送達': '包裹已送達，感謝您的購買！',
+};
+function orderTimeline(status) {
+  let idx = ORDER_STAGES.indexOf(status);
+  if (idx < 0) idx = 0; // 舊訂單（展示訂單）視為第一階段
+  return '<div class="track">' + ORDER_STAGES.map((s, i) =>
+    `<div class="track-step${i <= idx ? ' done' : ''}${i === idx ? ' now' : ''}"><span class="dot"></span><span class="lb">${s}</span></div>`
+  ).join('') + '</div>';
+}
+
 // 訂購紀錄（從 Supabase orders 表讀取）
 async function loadOrders() {
   const u = getUser(); if (!u) return;
@@ -103,9 +119,23 @@ async function loadOrders() {
   box.innerHTML = data.map(o => {
     const date = o.created_at ? new Date(o.created_at).toLocaleDateString('zh-TW') : '';
     const items = (o.items || []).map(it => `${it.name}${it.size ? '（' + it.size + '）' : ''} ×${it.qty}`).join('、');
+    const thumbs = (o.items || []).map(it => {
+      const p = findProduct(it.id);
+      return p ? `<img class="order-thumb" src="${p.img}" alt="${p.name}" title="${p.name}${it.size ? '（' + it.size + '）' : ''} ×${it.qty}"/>` : '';
+    }).join('');
+    const note = STAGE_NOTE[o.status] || STAGE_NOTE['訂單成立'];
+    const eta = (o.status !== '已送達' && typeof estDeliveryText === 'function')
+      ? `<br><span class="order-eta">預計送達 ${estDeliveryText(o.created_at)}</span>` : '';
+    const ship = o.address
+      ? `<div class="order-ship">${o.shipping_method || '宅配到府'}・${o.recipient || ''} ${o.phone || ''}<br>${o.address}${eta}</div>` : '';
     return `<div class="order-card">
-        <div class="order-top"><span class="order-date">${date}</span><span class="order-status">${o.status || '展示訂單'}</span></div>
+        <div class="order-top"><span class="order-no">${o.order_no || '訂單'}</span><span class="order-status">${o.status || '訂單成立'}</span></div>
+        <div class="order-date">${date}</div>
+        ${orderTimeline(o.status)}
+        <p class="order-note">${note}</p>
+        <div class="order-thumbs">${thumbs}</div>
         <p class="order-items">${items}</p>
+        ${ship}
         <div class="order-sub">小計 <b>${NT(o.subtotal || 0)}</b></div>
       </div>`;
   }).join('');

@@ -335,6 +335,71 @@
   .fav-remove{flex:none;width:30px;height:30px;border:none;background:none;color:var(--gray);font-size:20px;cursor:pointer;border-radius:50%;transition:.2s}
   .fav-remove:hover{color:#fff;background:var(--line)}
 
+  /* 訂單編號 / 配送進度時間軸 / 收件資訊 */
+  .order-no{font-size:12px;font-weight:600;letter-spacing:.04em;color:#fff}
+  .order-card .order-date{font-size:12px;color:var(--gray);margin-bottom:2px}
+  .track{display:flex;margin:14px 0}
+  .track-step{flex:1;text-align:center;position:relative}
+  .track-step .dot{display:block;width:11px;height:11px;border-radius:50%;background:var(--line-strong);margin:0 auto 7px;position:relative;z-index:2}
+  .track-step::before{content:'';position:absolute;top:5px;left:-50%;width:100%;height:2px;background:var(--line-strong);z-index:1}
+  .track-step:first-child::before{display:none}
+  .track-step.done .dot{background:var(--sand)}
+  .track-step.done::before{background:var(--sand)}
+  .track-step.now .dot{box-shadow:0 0 0 4px rgba(220,201,163,.22)}
+  .track-step .lb{font-size:10.5px;color:var(--gray)}
+  .track-step.now .lb{color:var(--sand);font-weight:600}
+  .order-ship{font-size:12px;color:#bdbdb8;line-height:1.6;background:rgba(245,245,245,.03);border-radius:4px;padding:9px 11px;margin:0 0 9px}
+
+  /* 結帳・收件資訊彈窗 */
+  .co-modal{position:fixed;inset:0;z-index:200;display:none}
+  .co-modal.open{display:block}
+  .co-scrim{position:absolute;inset:0;background:rgba(0,0,0,.62);backdrop-filter:blur(2px)}
+  .co-card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(440px,92vw);max-height:88vh;overflow:auto;background:var(--ink);border:1px solid var(--line-strong);border-radius:8px}
+  .co-head{display:flex;justify-content:space-between;align-items:center;padding:17px 20px;border-bottom:1px solid var(--line)}
+  .co-head h3{font-family:var(--head);font-weight:400;font-size:22px;letter-spacing:.02em}
+  .co-head .x{background:none;border:none;color:var(--gray);font-size:26px;cursor:pointer;line-height:1}
+  .co-body{padding:18px 20px 22px}
+  .co-summary{border:1px solid var(--line);border-radius:4px;padding:11px 14px;margin-bottom:18px}
+  .co-li{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:#cfcfca;padding:4px 0}
+  .co-li.co-total{border-top:1px solid var(--line);margin-top:6px;padding-top:8px;color:#fff;font-weight:600}
+  .co-form>div{margin-bottom:13px}
+  .co-form label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);margin-bottom:6px}
+  .co-form input{width:100%;background:#161616;border:1px solid var(--line-strong);border-radius:3px;color:#fff;padding:11px 12px;font-size:14px;font-family:var(--body)}
+  .co-form input:focus{outline:none;border-color:var(--sand)}
+  .co-form input.co-readonly{color:var(--gray)}
+  .co-note{font-size:12px;color:var(--gray);line-height:1.6;margin:2px 0 14px}
+  .co-submit{width:100%;cursor:pointer;font-family:var(--head);font-size:20px;letter-spacing:.08em;color:var(--ink);background:var(--sand);border:none;padding:13px;border-radius:3px;transition:.2s}
+  .co-submit:hover{background:#fff}
+  .co-submit:disabled{opacity:.6;cursor:default}
+  .co-back{width:100%;margin-top:10px;cursor:pointer;font-size:13px;color:var(--gray);background:none;border:none;padding:8px}
+  .co-back:hover{color:#fff}
+
+  /* 訂單成立確認畫面 */
+  .os-card{text-align:center}
+  .os-check{width:54px;height:54px;margin:4px auto 12px;border-radius:50%;background:var(--sand);color:var(--ink);font-size:30px;font-weight:700;display:grid;place-items:center}
+  .os-title{font-family:var(--head);font-weight:400;font-size:30px;letter-spacing:.02em;margin:0 0 4px}
+  .os-no{font-size:13px;letter-spacing:.06em;color:var(--sand);margin:0 0 18px}
+  .os-block{text-align:left;border:1px solid var(--line);border-radius:5px;padding:12px 14px;margin-bottom:14px}
+  .os-row{display:flex;gap:12px;font-size:13px;padding:5px 0;line-height:1.5}
+  .os-row span:first-child{flex:none;width:62px;color:var(--gray);font-size:11px;letter-spacing:.08em;font-weight:600}
+  .os-row span:last-child{color:#e7e7e2}
+  .os-row.os-eta span:last-child{color:var(--sand);font-weight:600}
+  .os-items{text-align:left;border:1px solid var(--line);border-radius:5px;padding:10px 12px;margin-bottom:6px}
+  .os-li{display:flex;align-items:center;gap:10px;padding:6px 0}
+  .os-li img{width:42px;height:42px;object-fit:cover;border-radius:3px;background:var(--char2);flex:none}
+  .os-li-info{display:flex;flex-direction:column;min-width:0;flex:1}
+  .os-li-name{font-size:13px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .os-li-meta{font-size:12px;color:var(--gray);margin-top:2px}
+  .os-total{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:6px;padding-top:8px;font-size:13px;font-weight:600;color:#fff}
+  .os-note{margin:8px 0 14px}
+  .os-link{display:block;text-align:center;text-decoration:none}
+
+  /* 訂單卡：狀態說明 + 商品縮圖 + 預計送達 */
+  .order-note{font-size:12.5px;color:#cfcfca;line-height:1.6;margin:0 0 10px}
+  .order-thumbs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+  .order-thumb{width:46px;height:46px;object-fit:cover;border-radius:3px;background:var(--char2)}
+  .order-eta{color:var(--sand);font-weight:600}
+
   /* 手機底部導覽列 */
   .tabbar{display:none}
   @media(max-width:600px){
