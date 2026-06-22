@@ -1,7 +1,7 @@
 /* account.js — 會員頁(account.html)
-   ★ 展示版：帳號資料暫存在瀏覽器 localStorage（非真正後端、未加密）。
-     之後接上 Supabase 後，只要替換 doRegister / doLogin / doLogout 內部即可，畫面不變。
-   依賴 store.js：setupCart / updateAuthUI / getUser / setUser / logoutUser
+   ★ 正式版：帳號透過 Supabase Auth 註冊／登入,資料存在雲端 profiles 表(含 RLS 保護）。
+     依賴：supabase-config.js(window.sb / window.djlSyncUser）、store.js(getUser / updateAuthUI / setUser）。
+   依賴 store.js：setupCart / updateAuthUI / getUser / setUser
 */
 setupCart();
 updateAuthUI();
@@ -17,37 +17,47 @@ const root = document.getElementById('authRoot');
 
 const BADGE = '<img class="brand-logo auth-logo" src="assets/logo.png" alt="David\'s Jeep Life"/>';
 
-// ── 展示版資料存取（之後改接 Supabase） ──
-const usersDB = () => { try { return JSON.parse(localStorage.getItem('djl_users')) || {}; } catch (e) { return {}; } };
-const saveUsers = db => localStorage.setItem('djl_users', JSON.stringify(db));
+// ── Supabase 錯誤訊息中文化 ──
+function zhErr(msg) {
+  const m = (msg || '').toLowerCase();
+  if (m.includes('invalid login')) return 'Email 或密碼不正確';
+  if (m.includes('already registered') || m.includes('already been registered')) return '這個 Email 已經註冊過了';
+  if (m.includes('password should be at least')) return '密碼至少需要 6 個字';
+  if (m.includes('unable to validate email') || m.includes('invalid email')) return 'Email 格式不正確';
+  if (m.includes('email rate limit') || m.includes('too many requests')) return '操作太頻繁,請稍後再試';
+  return msg || '發生錯誤,請稍後再試';
+}
 
-function nowDate() { return new Date().toLocaleDateString('zh-TW'); }
-
-function doRegister(name, email, phone, pw) {
-  const db = usersDB();
-  if (db[email]) return '這個 Email 已經註冊過了';
-  const since = nowDate();
-  db[email] = { name, phone, pw, since };
-  saveUsers(db);
-  setUser({ name, email, phone, since });
+// ── Supabase 帳號操作 ──
+async function doRegister(name, email, phone, pw) {
+  const { data, error } = await sb.auth.signUp({
+    email, password: pw,
+    options: { data: { name, phone } },
+  });
+  if (error) return zhErr(error.message);
+  if (!data.session) return '__CONFIRM__';   // 開啟 Email 驗證時,需先收信確認
   return null;
 }
-function doLogin(email, pw) {
-  const db = usersDB();
-  if (!db[email] || db[email].pw !== pw) return 'Email 或密碼不正確';
-  const u = db[email];
-  setUser({ name: u.name, email, phone: u.phone || '', since: u.since || '' });
+async function doLogin(email, pw) {
+  const { error } = await sb.auth.signInWithPassword({ email, password: pw });
+  if (error) return zhErr(error.message);
   return null;
 }
-function saveProfile(name, phone) {
-  const u = getUser(), db = usersDB();
-  if (db[u.email]) { db[u.email].name = name; db[u.email].phone = phone; saveUsers(db); }
-  setUser({ ...u, name, phone });
-  updateAuthUI();
+async function saveProfile(name, phone) {
+  const u = getUser();
+  if (!u) return;
+  const { error } = await sb.from('profiles').update({ name, phone }).eq('id', u.id);
+  if (!error) {
+    await sb.auth.updateUser({ data: { name, phone } });
+    setUser({ ...u, name, phone });
+    updateAuthUI();
+  }
+  return error ? zhErr(error.message) : null;
 }
 
 function renderMember() {
   const u = getUser();
+  if (!u) { renderAuth('login'); return; }
   root.innerHTML =
     BADGE +
     `<div class="member">
@@ -64,7 +74,11 @@ function renderMember() {
       <button class="logout" id="logoutBtn">登出</button>
     </div>`;
   document.getElementById('editBtn').onclick = renderEdit;
-  document.getElementById('logoutBtn').onclick = () => { logoutUser(); updateAuthUI(); render(); toast('已登出'); };
+  document.getElementById('logoutBtn').onclick = async () => {
+    await sb.auth.signOut();
+    await djlSyncUser(null);
+    render(); toast('已登出');
+  };
 }
 
 function renderEdit() {
@@ -77,14 +91,22 @@ function renderEdit() {
       <form class="auth-form" id="editForm" style="margin-top:18px;text-align:left">
         <div><label>姓名</label><input id="e_name" type="text" value="${u.name || ''}" required></div>
         <div><label>手機</label><input id="e_phone" type="tel" value="${u.phone || ''}"></div>
+        <p class="auth-msg" id="editMsg"></p>
         <button class="auth-submit" type="submit">儲存</button>
         <button class="member-edit" type="button" id="cancelEdit">取消</button>
       </form>
     </div>`;
   document.getElementById('cancelEdit').onclick = renderMember;
-  document.getElementById('editForm').onsubmit = e => {
+  document.getElementById('editForm').onsubmit = async e => {
     e.preventDefault();
-    saveProfile(document.getElementById('e_name').value.trim(), document.getElementById('e_phone').value.trim());
+    const btn = e.target.querySelector('.auth-submit');
+    btn.disabled = true;
+    const err = await saveProfile(
+      document.getElementById('e_name').value.trim(),
+      document.getElementById('e_phone').value.trim()
+    );
+    btn.disabled = false;
+    if (err) { document.getElementById('editMsg').textContent = err; return; }
     toast('資料已更新');
     renderMember();
   };
@@ -101,25 +123,39 @@ function renderAuth(tab = 'login') {
        ${tab === 'register' ? '<div><label>姓名</label><input id="f_name" type="text" autocomplete="name" required></div>' : ''}
        ${tab === 'register' ? '<div><label>手機（選填）</label><input id="f_phone" type="tel" autocomplete="tel"></div>' : ''}
        <div><label>Email</label><input id="f_email" type="email" autocomplete="email" required></div>
-       <div><label>密碼</label><input id="f_pw" type="password" autocomplete="${tab === 'register' ? 'new-password' : 'current-password'}" minlength="4" required></div>
+       <div><label>密碼</label><input id="f_pw" type="password" autocomplete="${tab === 'register' ? 'new-password' : 'current-password'}" minlength="6" required></div>
        <p class="auth-msg" id="authMsg"></p>
        <button class="auth-submit" type="submit">${tab === 'login' ? '登入' : '建立帳號'}</button>
-       <p class="auth-note">展示版：帳號暫存在你的瀏覽器，尚未連接後端。<br>之後接上 Supabase 後即為正式會員。</p>
+       <p class="auth-note">你的帳號將安全儲存於雲端，密碼經加密保護。</p>
      </form>`;
   root.querySelectorAll('.auth-tabs button').forEach(b => b.onclick = () => renderAuth(b.dataset.tab));
-  document.getElementById('authForm').onsubmit = e => {
+  document.getElementById('authForm').onsubmit = async e => {
     e.preventDefault();
+    const msg = document.getElementById('authMsg');
+    const btn = e.target.querySelector('.auth-submit');
     const email = document.getElementById('f_email').value.trim().toLowerCase();
     const pw = document.getElementById('f_pw').value;
+    msg.textContent = ''; btn.disabled = true;
     const err = tab === 'register'
-      ? doRegister(document.getElementById('f_name').value.trim(), email, document.getElementById('f_phone').value.trim(), pw)
-      : doLogin(email, pw);
-    if (err) { document.getElementById('authMsg').textContent = err; return; }
-    updateAuthUI();
+      ? await doRegister(document.getElementById('f_name').value.trim(), email, document.getElementById('f_phone').value.trim(), pw)
+      : await doLogin(email, pw);
+    btn.disabled = false;
+    if (err === '__CONFIRM__') {
+      msg.style.color = 'inherit';
+      msg.textContent = '註冊成功！請到信箱收確認信,點擊連結後即可登入。';
+      return;
+    }
+    if (err) { msg.textContent = err; return; }
+    // 確保顯示快取已更新後再切到會員中心
+    const { data: { session } } = await sb.auth.getSession();
+    await djlSyncUser(session);
     toast(tab === 'register' ? '註冊成功，已登入' : '登入成功');
     render();
   };
 }
 
 function render() { getUser() ? renderMember() : renderAuth('login'); }
+
+// 進頁時先以快取畫面,再依 Supabase 實際 session 校正(onAuthStateChange 會觸發 onDjlAuthChange）
+window.onDjlAuthChange = render;
 render();
