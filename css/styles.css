@@ -400,6 +400,30 @@
   .order-thumb{width:46px;height:46px;object-fit:cover;border-radius:3px;background:var(--char2)}
   .order-eta{color:var(--sand);font-weight:600}
 
+  /* 訂單管理後台 admin.html */
+  .admin{min-height:100vh;padding:120px 26px 80px;background:var(--ink)}
+  .admin-wrap{max-width:760px;margin:0 auto}
+  .auth-card-inner{max-width:390px;margin:0 auto;text-align:center;border:1px solid var(--line);border-radius:8px;background:var(--char);padding:34px 30px}
+  .auth-card-inner .auth-form{text-align:left}
+  .admin-h{font-family:var(--head);font-weight:400;font-size:30px;letter-spacing:.02em;margin:0}
+  .admin-sub{font-size:13px;color:var(--gray);margin:6px 0 0;line-height:1.6}
+  .admin-bar{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+  .admin-logout{width:auto;margin-top:0;padding:10px 20px;font-size:15px}
+  .admin-list{display:flex;flex-direction:column;gap:12px}
+  .admin-order{border:1px solid var(--line);border-radius:6px;padding:16px;background:var(--char)}
+  .ao-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:4px}
+  .ao-head .order-no{font-size:14px}
+  .ao-status{background:#161616;border:1px solid var(--sand-deep);border-radius:4px;color:var(--sand);font-family:var(--body);font-size:13px;font-weight:600;padding:7px 10px;cursor:pointer}
+  .ao-status:focus{outline:none;border-color:var(--sand)}
+  .ao-date{font-size:12px;color:var(--gray);margin-bottom:10px}
+  .ao-cust{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:#e7e7e2;margin-bottom:4px}
+  .ao-cust a{color:var(--sand);text-decoration:none}
+  .ao-cust a:hover{text-decoration:underline}
+  .ao-addr{font-size:12.5px;color:#bdbdb8;margin-bottom:8px;line-height:1.5}
+  .ao-items{font-size:13px;color:#cfcfca;line-height:1.7;margin-bottom:8px}
+  .ao-sub{font-size:13px;color:var(--gray)}
+  .ao-sub b{color:#fff;font-size:15px}
+
   /* 手機底部導覽列 */
   .tabbar{display:none}
   @media(max-width:600px){

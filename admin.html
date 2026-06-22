@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>訂單後台 · David's Jeep Life</title>
+<meta name="robots" content="noindex"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css"/>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png"/>
+<meta name="theme-color" content="#111111"/>
+</head>
+<body>
+
+<header class="nav solid" id="nav">
+  <a class="b" href="index.html"><img src="assets/logo.png" alt="David's Jeep Life"/></a>
+  <nav class="nav-links">
+    <a href="index.html">回前台</a><a href="shop.html">Shop</a>
+  </nav>
+  <div class="nav-right">
+    <button class="acct-btn" id="acctBtn">登入 / 註冊</button>
+  </div>
+</header>
+
+<section class="admin">
+  <div class="admin-wrap" id="adminRoot"><!-- 由 admin.js 填入 --></div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="js/supabase-config.js" defer></script>
+<script src="js/store.js" defer></script>
+<script src="js/admin.js" defer></script>
+</body>
+</html>

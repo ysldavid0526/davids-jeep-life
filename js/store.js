@@ -258,6 +258,7 @@ function openCheckout() {
     const order = {
       user_id: u.id,
       order_no: genOrderNo(),
+      email: u.email,
       items, subtotal,
       recipient: document.getElementById('co_name').value.trim(),
       phone: document.getElementById('co_phone').value.trim(),
