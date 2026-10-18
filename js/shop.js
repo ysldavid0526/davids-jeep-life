@@ -6,6 +6,11 @@ setupCart();
 // 商品列表
 const grid = document.getElementById('grid');
 if (grid) {
+  if (typeof STORE_OPEN !== 'undefined' && !STORE_OPEN) {
+    const b = document.createElement('div'); b.className = 'shop-closed';
+    b.textContent = '🛠 商店暫停營業中，商品僅供瀏覽，敬請期待再度開賣。';
+    grid.parentNode.insertBefore(b, grid);
+  }
   grid.innerHTML = PRODUCTS.map(p => productCardHTML(p)).join('');
   grid.addEventListener('click', e => {
     const b = e.target.closest('.add');

@@ -424,6 +424,40 @@
   .ao-sub{font-size:13px;color:var(--gray)}
   .ao-sub b{color:#fff;font-size:15px}
 
+  /* 後台留言管理 */
+  .admin-msg{border:1px solid var(--line);border-radius:6px;padding:14px 16px;background:var(--char)}
+  .am-top{display:flex;justify-content:space-between;gap:12px;margin-bottom:6px}
+  .am-name{font-weight:600;font-size:13px;color:var(--sand)}
+  .am-date{font-size:11px;color:var(--gray)}
+  .am-body{font-size:14px;color:#d8d8d3;line-height:1.7;white-space:pre-wrap;word-break:break-word;margin:0 0 10px}
+  .am-del{cursor:pointer;font-size:12px;letter-spacing:.06em;color:#e88a8a;background:none;border:1px solid rgba(232,138,138,.4);border-radius:3px;padding:5px 12px;transition:.2s}
+  .am-del:hover{background:rgba(232,138,138,.12)}
+  .am-del:disabled{opacity:.5}
+
+  /* 留言板 Guestbook */
+  .guestbook{text-align:center}
+  .gb-form{max-width:560px;margin:26px auto 0;text-align:left}
+  .gb-name,.gb-body{width:100%;background:#161616;border:1px solid var(--line-strong);border-radius:4px;color:#fff;padding:12px 14px;font-size:14px;font-family:var(--body);margin-bottom:12px}
+  .gb-name:focus,.gb-body:focus{outline:none;border-color:var(--sand)}
+  .gb-body{resize:vertical;line-height:1.6}
+  .gb-actions{display:flex;align-items:center;gap:14px}
+  .gb-submit{cursor:pointer;font-family:var(--head);font-size:18px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);background:var(--sand);border:none;padding:11px 28px;border-radius:2px;transition:.2s}
+  .gb-submit:hover{background:#fff}
+  .gb-submit:disabled{opacity:.6;cursor:default}
+  .gb-msg{font-size:13px;color:var(--sand)}
+  .gb-list{max-width:560px;margin:34px auto 0;text-align:left;display:flex;flex-direction:column;gap:12px}
+  .gb-empty{color:var(--gray);font-size:14px;text-align:center;padding:8px 0}
+  .gb-item{border:1px solid var(--line);border-radius:5px;padding:14px 16px;background:var(--ink)}
+  .gb-item-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;gap:12px}
+  .gb-item-name{font-weight:600;font-size:13px;color:var(--sand)}
+  .gb-item-date{font-size:11px;color:var(--gray);flex:none}
+  .gb-item-body{font-size:14px;color:#d8d8d3;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+
+  /* 暫停販售 */
+  .sold-pause{font-weight:600;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);border:1px solid var(--line-strong);padding:10px 13px;border-radius:2px;white-space:nowrap}
+  .shop-closed{max-width:640px;margin:0 auto 30px;text-align:center;font-size:14px;letter-spacing:.02em;color:var(--sand);background:rgba(220,201,163,.08);border:1px solid var(--sand-deep);border-radius:6px;padding:15px 20px;line-height:1.7}
+  .pdp-closed{font-size:15px;color:var(--sand);background:rgba(220,201,163,.08);border:1px solid var(--sand-deep);border-radius:6px;padding:14px 16px;margin:0 0 4px;max-width:360px;line-height:1.6}
+
   /* 手機底部導覽列 */
   .tabbar{display:none}
   @media(max-width:600px){

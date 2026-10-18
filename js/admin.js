@@ -63,9 +63,38 @@ async function renderDashboard() {
        <div><h2 class="admin-h">訂單管理</h2><p class="admin-sub" id="adminCount">載入中…</p></div>
        <button class="member-edit admin-logout" id="logoutBtn">登出</button>
      </div>
-     <div id="orderList" class="admin-list"><p class="member-empty">載入中…</p></div>`;
+     <div id="orderList" class="admin-list"><p class="member-empty">載入中…</p></div>
+     <div class="admin-bar" style="margin-top:42px"><div><h2 class="admin-h">留言板管理</h2><p class="admin-sub" id="msgCount">載入中…</p></div></div>
+     <div id="msgList" class="admin-list"><p class="member-empty">載入中…</p></div>`;
   document.getElementById('logoutBtn').onclick = async () => { await sb.auth.signOut(); await djlSyncUser(null); render(); };
   await loadAllOrders();
+  await loadAllMessages();
+}
+
+async function loadAllMessages() {
+  const list = document.getElementById('msgList');
+  const { data, error } = await sb.from('messages').select('*').order('created_at', { ascending: false });
+  if (error) { list.innerHTML = `<p class="member-empty">讀取失敗：${error.message}</p>`; return; }
+  document.getElementById('msgCount').textContent = `共 ${data.length} 則留言`;
+  if (!data.length) { list.innerHTML = '<p class="member-empty">目前還沒有留言</p>'; return; }
+  list.innerHTML = data.map(m => {
+    const date = m.created_at ? new Date(m.created_at).toLocaleString('zh-TW') : '';
+    return `<div class="admin-msg">
+        <div class="am-top"><span class="am-name">${escapeHTML(m.name) || '訪客'}</span><span class="am-date">${date}</span></div>
+        <p class="am-body">${escapeHTML(m.body)}</p>
+        <button class="am-del" data-id="${m.id}">刪除</button>
+      </div>`;
+  }).join('');
+  list.querySelectorAll('.am-del').forEach(b => {
+    b.onclick = async () => {
+      if (!confirm('確定刪除這則留言？')) return;
+      b.disabled = true;
+      const { error } = await sb.from('messages').delete().eq('id', b.dataset.id);
+      if (error) { toast('刪除失敗：' + error.message); b.disabled = false; return; }
+      toast('已刪除留言');
+      loadAllMessages();
+    };
+  });
 }
 
 async function loadAllOrders() {

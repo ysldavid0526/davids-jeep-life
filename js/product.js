@@ -90,4 +90,19 @@ if (!p) {
   // 收藏鈕（綁定此商品；點擊由 store.js 的全站委派處理）
   const favBtn = document.getElementById('pdpFav');
   if (favBtn) { favBtn.dataset.fav = p.id; refreshFavUI(); }
+
+  // 暫停營業：隱藏數量/尺寸/加入購物車，顯示提示（收藏仍可用）
+  if (typeof STORE_OPEN !== 'undefined' && !STORE_OPEN) {
+    const add = document.getElementById('pdpAdd'); if (add) add.style.display = 'none';
+    const q = document.querySelector('.pdp-qty'); if (q) q.style.display = 'none';
+    const sw = document.getElementById('pdpSizeWrap'); if (sw) sw.hidden = true;
+    const ship = document.querySelector('.pdp-ship'); if (ship) ship.style.display = 'none';
+    const actions = document.querySelector('.pdp-actions');
+    if (actions) {
+      const note = document.createElement('p');
+      note.className = 'pdp-closed';
+      note.textContent = '商店暫停營業中，商品僅供瀏覽，敬請期待 ☕';
+      actions.insertAdjacentElement('beforebegin', note);
+    }
+  }
 }

@@ -74,8 +74,18 @@ const PRODUCTS = [
 ];
 const FREE = 2000;
 
+/* ★ 開店開關：false = 暫停販售（隱藏購物車與購買按鈕，商品仍可瀏覽）
+   要重新開賣時，把這行改成 true 即可。 */
+const STORE_OPEN = false;
+
 const NT = n => 'NT$' + Number(n).toLocaleString('en-US');
 const findProduct = id => PRODUCTS.find(p => p.id === id);
+
+// 將使用者輸入的文字轉義，避免當成 HTML 執行（留言板、後台顯示客戶資料共用）
+function escapeHTML(s) {
+  return (s == null ? '' : String(s)).replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
 
 // 購物車的 key：無尺寸=商品編號；有尺寸=「編號__尺寸」(例 DJ-02__M)，不同尺寸視為不同項目
 const cartKey = (id, size) => size ? id + '__' + size : id;
@@ -111,7 +121,8 @@ function productCardHTML(p, revealClass = '') {
     `<img src="${p.img}" alt="${p.name}" loading="lazy"/></div></a>` +
     `<div class="card-body"><a class="card-link" href="${href}"><h3>${p.name}</h3></a><p>${p.desc}</p>` +
     `<div class="price-row"><span class="price"><span class="cur">NT$</span>${p.price.toLocaleString('en-US')}</span>` +
-    `<button class="add" data-id="${p.id}">加入</button></div></div></article>`;
+    (STORE_OPEN ? `<button class="add" data-id="${p.id}">加入</button>` : `<span class="sold-pause">暫停販售</span>`) +
+    `</div></div></article>`;
 }
 
 /* 手機底部導覽列（App 式,≤600px 顯示）。各頁載入時由 setupCart 自動注入。 */
@@ -132,7 +143,7 @@ function injectTabBar(openCart) {
   nav.innerHTML =
     `<a href="index.html" class="${onHome ? 'on' : ''}">${icon('home')}<span>首頁</span></a>` +
     `<a href="shop.html" class="${onShop ? 'on' : ''}">${icon('bag')}<span>商品</span></a>` +
-    `<button type="button" id="tabCart">${icon('cart')}<span class="tc" id="tabCount" style="display:none">0</span><span>購物車</span></button>` +
+    (STORE_OPEN ? `<button type="button" id="tabCart">${icon('cart')}<span class="tc" id="tabCount" style="display:none">0</span><span>購物車</span></button>` : '') +
     `<a href="account.html" class="${path === 'account.html' ? 'on' : ''}">${icon('user')}<span>會員</span></a>`;
   document.body.appendChild(nav);
   const tc = document.getElementById('tabCart');
@@ -153,6 +164,9 @@ function setupCart() {
   if (scrim)    scrim.onclick    = close;
   window.closeCartDrawer = close;
   injectTabBar(open);
+
+  // 暫停販售：隱藏導覽列的購物車入口
+  if (!STORE_OPEN && openBtn) openBtn.style.display = 'none';
 
   window.renderCart = function () {
     const ids = Object.keys(cart);
@@ -195,6 +209,7 @@ function setupCart() {
   if (checkout) checkout.onclick = () => { close(); openCheckout(); };
 
   window.addToCart = function (id, n = 1, size = '') {
+    if (!STORE_OPEN) { toast('商店暫停營業中，敬請期待'); return; }
     const key = cartKey(id, size);
     cart[key] = (cart[key] || 0) + n;
     saveCart(); renderCart();

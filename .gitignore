@@ -1,3 +1,5 @@
 .DS_Store
 .claude/
 build_from_prototype.py
+bump-version.sh
+david jeep life/
