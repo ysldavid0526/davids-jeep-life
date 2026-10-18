@@ -213,8 +213,23 @@ const BUILD = [
   },
 ];
 
-// 把照片路徑補進每個產品（集中管理）
-BUILD.forEach(p => { p.photos = buildPhotos(p.folder); });
+// 實車安裝照（用 David 的真實 Jeep 照片；缺的維持佔位）
+const R = 'assets/build/_real/';
+const BUILD_INST = {
+  evo: R + 'susp.webp', king: R + 'susp.webp', fox: R + 'susp.webp',
+  teraflex: R + 'underbody.webp', 'dynatrac-front': R + 'underbody.webp', 'dynatrac-rear': R + 'underbody.webp',
+  adams: R + 'underbody.webp', psc: R + 'underbody.webp', swayloc: R + 'underbody.webp',
+  maxxis: R + 'underbody.webp', raceline: R + 'underbody.webp',
+  rebel: R + 'front.webp', warn: R + 'front.webp', baja: R + 'front.webp', rigid: R + 'front.webp',
+  'rockslide-step': R + 'side.webp', 'rockslide-spare': R + 'side.webp',
+  watertank: R + 'side.webp', ada: R + 'side.webp', rooftop: R + 'side.webp',
+};
+// 把照片路徑補進每個產品（集中管理）；有實車照就套用
+BUILD.forEach(p => {
+  p.photos = buildPhotos(p.folder);
+  if (BUILD_INST[p.id]) p.photos.installed = BUILD_INST[p.id];
+  p.card = p.photos.installed; // 卡片縮圖優先用實車照（缺則為佔位路徑）
+});
 
 function findBuild(id) { return BUILD.find(p => p.id === id); }
 
@@ -222,35 +237,46 @@ function findBuild(id) { return BUILD.find(p => p.id === id); }
    每個 view：id / label / img（背景照，缺檔顯示佔位）/ hotspots[{x,y,label,pid}] */
 const BUILD_VIEWS = [
   {
-    id: 'side', label: 'SIDE VIEW', img: 'assets/build/views/side.webp',
+    id: 'side', label: 'SIDE VIEW', img: 'assets/build/_real/side.webp',
     hotspots: [
-      { x: 20, y: 70, label: 'Front Tire · MAXXIS M8060', pid: 'maxxis' },
-      { x: 20, y: 55, label: 'Front Wheel · Raceline Beadlock', pid: 'raceline' },
-      { x: 26, y: 62, label: 'Front Axle · Dynatrac ProRock 60', pid: 'dynatrac-front' },
-      { x: 33, y: 55, label: 'Front Suspension · EVO / KING', pid: 'evo' },
-      { x: 42, y: 66, label: 'Long Control Arms · TeraFlex', pid: 'teraflex' },
-      { x: 38, y: 46, label: 'Steering · PSC', pid: 'psc' },
-      { x: 50, y: 60, label: 'Sway Bar · SwayLOC', pid: 'swayloc' },
-      { x: 55, y: 72, label: 'Side Steps · Rock Slide', pid: 'rockslide-step' },
+      { x: 12, y: 78, label: 'Front Tire · MAXXIS M8060', pid: 'maxxis' },
+      { x: 12, y: 64, label: 'Front Wheel · Raceline Beadlock', pid: 'raceline' },
+      { x: 19, y: 50, label: 'Front Suspension · EVO / KING', pid: 'evo' },
+      { x: 21, y: 73, label: 'Front Axle · Dynatrac ProRock 60', pid: 'dynatrac-front' },
+      { x: 27, y: 77, label: 'Long Control Arms · TeraFlex', pid: 'teraflex' },
+      { x: 16, y: 58, label: 'Steering · PSC', pid: 'psc' },
+      { x: 32, y: 72, label: 'Sway Bar · SwayLOC', pid: 'swayloc' },
+      { x: 44, y: 73, label: 'Side Steps · Rock Slide', pid: 'rockslide-step' },
     ],
   },
   {
-    id: 'rear', label: 'REAR VIEW', img: 'assets/build/views/rear.webp',
+    id: 'rear', label: 'REAR VIEW', img: 'assets/build/_real/rear.webp',
     hotspots: [
-      { x: 50, y: 66, label: 'Rear Axle · Dynatrac ProRock 60', pid: 'dynatrac-rear' },
-      { x: 42, y: 54, label: 'Rear Suspension · EVO / KING', pid: 'king' },
-      { x: 50, y: 40, label: 'Spare Tire Equipment · Rock Slide', pid: 'rockslide-spare' },
-      { x: 58, y: 44, label: 'Water Tank · Spare Tire Storage', pid: 'watertank' },
-      { x: 50, y: 18, label: 'Rooftop · Pop-up Tent', pid: 'rooftop' },
+      { x: 50, y: 64, label: 'Rear Axle · Dynatrac ProRock 60', pid: 'dynatrac-rear' },
+      { x: 45, y: 50, label: 'Rear Suspension · EVO / KING', pid: 'king' },
+      { x: 55, y: 40, label: 'Spare Tire Equipment · Rock Slide', pid: 'rockslide-spare' },
+      { x: 60, y: 46, label: 'Water Tank · Spare Tire Storage', pid: 'watertank' },
+      { x: 48, y: 22, label: 'Rooftop · Pop-up Tent', pid: 'rooftop' },
     ],
   },
   {
-    id: 'front', label: 'FRONT VIEW', img: 'assets/build/views/front.webp',
+    id: 'front', label: 'FRONT VIEW', img: 'assets/build/_real/front.webp',
     hotspots: [
-      { x: 50, y: 64, label: 'Front Bumper · Rebel Off Road', pid: 'rebel' },
-      { x: 50, y: 54, label: 'Winch · WARN', pid: 'warn' },
-      { x: 34, y: 34, label: 'Lighting · Baja Designs', pid: 'baja' },
-      { x: 66, y: 34, label: 'Lighting · RIGID', pid: 'rigid' },
+      { x: 53, y: 85, label: 'Front Bumper · Rebel Off Road', pid: 'rebel' },
+      { x: 52, y: 78, label: 'Winch · WARN', pid: 'warn' },
+      { x: 43, y: 91, label: 'Lighting · Baja Designs', pid: 'baja' },
+      { x: 56, y: 17, label: 'Lighting · RIGID', pid: 'rigid' },
+    ],
+  },
+  {
+    id: 'underbody', label: 'UNDERBODY', img: 'assets/build/_real/underbody.webp',
+    hotspots: [
+      { x: 56, y: 49, label: 'EVO Suspension / KING', pid: 'evo' },
+      { x: 44, y: 72, label: 'SwayLOC Sway Bar', pid: 'swayloc' },
+      { x: 27, y: 86, label: 'PSC Steering', pid: 'psc' },
+      { x: 36, y: 90, label: 'Dynatrac Axle', pid: 'dynatrac-front' },
+      { x: 48, y: 88, label: 'Adams Driveshaft', pid: 'adams' },
+      { x: 62, y: 60, label: 'MAXXIS / Raceline', pid: 'maxxis' },
     ],
   },
   {
@@ -258,18 +284,6 @@ const BUILD_VIEWS = [
     hotspots: [
       { x: 50, y: 48, label: 'Lighting Control · FURY', pid: 'fury' },
       { x: 32, y: 56, label: 'Onboard Air · ARB', pid: 'arb' },
-    ],
-  },
-  {
-    id: 'underbody', label: 'UNDERBODY', img: 'assets/build/views/underbody.webp',
-    hotspots: [
-      { x: 30, y: 40, label: 'EVO Suspension', pid: 'evo' },
-      { x: 42, y: 55, label: 'TeraFlex Long Arms', pid: 'teraflex' },
-      { x: 24, y: 60, label: 'Dynatrac Front Axle', pid: 'dynatrac-front' },
-      { x: 74, y: 60, label: 'Dynatrac Rear Axle', pid: 'dynatrac-rear' },
-      { x: 50, y: 50, label: 'Adams Driveshaft', pid: 'adams' },
-      { x: 36, y: 46, label: 'PSC Steering', pid: 'psc' },
-      { x: 58, y: 44, label: 'SwayLOC Sway Bar', pid: 'swayloc' },
     ],
   },
 ];

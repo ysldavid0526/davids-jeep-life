@@ -45,7 +45,7 @@ function renderMods() {
     if (!items.length) return '';
     return `<div class="rig-cat"><h3 class="rig-cat-h">${cat}</h3><div class="rig-grid">` +
       items.map(p => `<button class="rig-card" data-pid="${p.id}">` +
-        `<div class="rig-card-media">${imgSlot(p.photos.product, p.product)}</div>` +
+        `<div class="rig-card-media">${imgSlot(p.card || p.photos.product, p.product)}</div>` +
         `<div class="rig-card-body"><span class="rig-brand">${esc(p.brand)}</span>` +
         `<h4>${esc(p.product)}</h4>` +
         `<div class="rig-card-foot"><span class="rig-model">${esc(p.model)}</span>` +
@@ -61,8 +61,10 @@ function openDetail(pid) {
   const modal = document.getElementById('buildModal');
   const photos = [p.photos.product, p.photos.installed, ...p.photos.detail];
   const labels = ['原廠產品', '實車安裝'].concat(p.photos.detail.map((_, i) => '細節 ' + (i + 1)));
+  let startI = photos.findIndex(s => s && s.indexOf('/_real/') >= 0);
+  if (startI < 0) startI = 0;
   const thumbs = photos.map((src, i) =>
-    `<button class="rig-thumb ${i === 0 ? 'on' : ''}" data-i="${i}">${imgSlot(src, labels[i])}<span class="rig-thumb-lb">${labels[i]}</span></button>`).join('');
+    `<button class="rig-thumb ${i === startI ? 'on' : ''}" data-i="${i}">${imgSlot(src, labels[i])}<span class="rig-thumb-lb">${labels[i]}</span></button>`).join('');
   const specsRows = (p.specs && p.specs.length)
     ? p.specs.map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')
     : `<tr><th>技術規格</th><td class="rig-tbd">待確認</td></tr>`;
@@ -75,7 +77,7 @@ function openDetail(pid) {
     <button class="rig-modal-x" aria-label="關閉">×</button>
     <div class="rig-modal-grid">
       <div class="rig-modal-media">
-        <div class="rig-modal-main" id="rmMain">${imgSlot(photos[0], p.product, 'rig-modal-mainimg')}</div>
+        <div class="rig-modal-main" id="rmMain">${imgSlot(photos[startI], p.product, 'rig-modal-mainimg')}</div>
         <div class="rig-modal-thumbs">${thumbs}</div>
         <p class="rig-modal-tip">點大圖可放大 · 支援全螢幕與滑動</p>
       </div>
@@ -99,7 +101,7 @@ function openDetail(pid) {
   modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
 
-  let curI = 0;
+  let curI = startI;
   const main = document.getElementById('rmMain');
   const bindMain = () => { const im = main.querySelector('img'); if (im) im.onclick = () => openLightbox(photos, curI); };
   const setMain = i => {
