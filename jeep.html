@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DAVID'S JEEP — The Build</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css?v=1792297025"/>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png"/>
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"/>
+<meta name="theme-color" content="#0d0d0d"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="DAVID'S JEEP — Built For The Extreme"/>
+<meta property="og:description" content="BUILT FOR THE EXTREME. MADE FOR ADVENTURE. — Jeep Wrangler JL Rubicon 改裝實錄。"/>
+<meta property="og:image" content="assets/og-image.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+  <script>window.APP_VER='1792297025';</script>
+  <script src="js/version-check.js?v=1792297025"></script>
+</head>
+<body class="build-page">
+
+<header class="nav solid" id="nav">
+  <a class="b" href="index.html"><img src="assets/logo.png" alt="David's Jeep Life"/></a>
+  <nav class="nav-links">
+    <a href="index.html">首頁</a><a href="jeep.html" class="active">我的戰車</a><a href="shop.html">Shop</a><a href="index.html#community">Community</a>
+  </nav>
+  <div class="nav-right">
+    <button class="cart-btn" id="openCart">CART <span class="cart-count" id="count">0</span></button>
+    <button class="acct-btn" id="acctBtn">登入 / 註冊</button>
+    <button class="menu-btn" id="openMenu">Menu</button>
+  </div>
+</header>
+
+<div class="menu" id="menu">
+  <button class="mx" id="closeMenu">×</button>
+  <a href="index.html">首頁</a><a href="jeep.html">我的戰車</a><a href="shop.html">Shop</a><a href="account.html">會員</a><a href="index.html#community">Community</a>
+</div>
+
+<!-- HERO -->
+<header class="rig-hero">
+  <div class="rig-hero-bg"><img src="assets/hero.jpg" alt="DAVID'S JEEP"/></div>
+  <div class="rig-hero-tint"></div>
+  <div class="rig-hero-in">
+    <p class="rig-eyebrow">The Build · 改裝實錄</p>
+    <h1 class="rig-title">DAVID'S JEEP</h1>
+    <p class="rig-tagline">BUILT FOR THE EXTREME.<br>MADE FOR ADVENTURE.</p>
+    <div class="rig-meta">
+      <span><b>Jeep</b> Wrangler JL Rubicon</span>
+      <span class="dot">·</span>
+      <span>3.6L Pentastar V6</span>
+    </div>
+    <a class="rig-scroll" href="#rig-views">探索改裝 ↓</a>
+  </div>
+</header>
+
+<!-- INTERACTIVE VEHICLE VIEWS -->
+<section class="sec rig-views" id="rig-views">
+  <div class="wrap">
+    <div class="rig-sec-head">
+      <p class="rig-eyebrow red">Interactive · 互動改裝地圖</p>
+      <h2 class="rig-h2">點擊車上每一處改裝</h2>
+      <p class="rig-sub">切換視角，點選標記查看該零件的品牌、型號與規格。</p>
+    </div>
+    <div class="rig-view-tabs" id="viewTabs"></div>
+    <div class="rig-stage" id="viewStage"></div>
+    <p class="rig-hint" id="viewHint"></p>
+  </div>
+</section>
+
+<!-- MODIFICATION LIST -->
+<section class="sec rig-mods" id="rig-mods">
+  <div class="wrap">
+    <div class="rig-sec-head">
+      <p class="rig-eyebrow red">Modifications · 改裝清單</p>
+      <h2 class="rig-h2">Full Build List</h2>
+      <p class="rig-sub">共 <b id="modCount">0</b> 項改裝 · 點任一張卡查看完整規格</p>
+    </div>
+    <div id="buildMods"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="sec rig-cta">
+  <div class="wrap">
+    <h2 class="rig-cta-h">Explore More. Live More.</h2>
+    <div class="rig-cta-row">
+      <a class="btn-sand" href="shop.html">看看商品</a>
+      <a class="btn-ghost" href="index.html#journey">更多旅程</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot" id="footer">
+  <div class="wrap">
+    <img class="brand-logo" src="assets/logo.png" alt="David's Jeep Life"/>
+    <div class="fw">David's Jeep Life</div>
+    <div class="ft">Explore More. Live More.</div>
+    <div class="rule"><span class="seg"></span>Taiwan <span class="peak">→</span> Worldwide<span class="seg"></span></div>
+    <p class="mini">Not Just A Jeep. It's A Way Of Life.</p>
+    <p class="contact"><a href="https://instagram.com/davidjeeplife" target="_blank" rel="noopener">@davidjeeplife</a> · <a href="mailto:david@davidjeep.life">david@davidjeep.life</a></p>
+    <nav><a href="index.html">首頁</a><a href="jeep.html">我的戰車</a><a href="shop.html">Shop</a><a href="account.html">會員</a></nav>
+  </div>
+</footer>
+
+<!-- 產品詳細彈窗（由 jeep.js 填入） -->
+<div class="rig-modal" id="buildModal" aria-hidden="true"></div>
+<!-- 燈箱（放大／左右／全螢幕／滑動；由 jeep.js 控制） -->
+<div class="lightbox" id="lightbox" aria-hidden="true"></div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="購物車">
+  <div class="dh"><h3>Cart · 購物車</h3><button class="x" id="closeCart" aria-label="關閉">×</button></div>
+  <div class="db" id="cartItems"></div>
+  <div class="df"><div class="sr"><span class="l">小計 Subtotal</span><span class="v" id="subtotal">NT$0</span></div><p class="sn" id="shipNote">再買 <b>NT$2,000</b> 即可免運</p><button class="checkout" id="checkout" disabled>前往結帳</button></div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="js/supabase-config.js?v=1792297025" defer></script>
+<script src="js/store.js?v=1792297025" defer></script>
+<script src="js/build-data.js?v=1792297025" defer></script>
+<script src="js/jeep.js?v=1792297025" defer></script>
+</body>
+</html>
