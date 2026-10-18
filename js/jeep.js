@@ -1,8 +1,6 @@
 /* jeep.js — DAVID'S JEEP 改裝展示頁 V2.0
-   依賴：store.js（setupCart/updateAuthUI/escapeHTML）、build-data.js（BUILD/BUILD_VIEWS…）
+   依賴：store.js（escapeHTML）、build-data.js（BUILD/BUILD_VIEWS…）
 */
-setupCart();
-updateAuthUI();
 
 // 行動版選單
 const menu = document.getElementById('menu');
@@ -167,7 +165,7 @@ addEventListener('keydown', e => {
     else if (e.key === 'ArrowRight') lbGo(1);
   } else if (md.classList.contains('open')) {
     if (e.key === 'Escape') closeDetail();
-  } else if (e.key === 'Escape') { if (window.closeCartDrawer) closeCartDrawer(); menu.classList.remove('open'); }
+  } else if (e.key === 'Escape') { menu.classList.remove('open'); }
 });
 
 renderViews();

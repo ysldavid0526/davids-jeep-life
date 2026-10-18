@@ -1,23 +1,7 @@
-/* shop.js — 購物頁(shop.html)互動
-   依賴 store.js（須先載入）：PRODUCTS / setupCart / addToCart / productCardHTML / closeCartDrawer
-*/
-setupCart();
+/* shop.js — 型錄頁(shop.html) 依賴 store.js：PRODUCTS / productCardHTML */
 
-// 商品列表
 const grid = document.getElementById('grid');
-if (grid) {
-  if (typeof STORE_OPEN !== 'undefined' && !STORE_OPEN) {
-    const b = document.createElement('div'); b.className = 'shop-closed';
-    b.textContent = '🛠 商店暫停營業中，商品僅供瀏覽，敬請期待再度開賣。';
-    grid.parentNode.insertBefore(b, grid);
-  }
-  grid.innerHTML = PRODUCTS.map(p => productCardHTML(p)).join('');
-  grid.addEventListener('click', e => {
-    const b = e.target.closest('.add');
-    if (b) addToCart(b.dataset.id);
-  });
-  refreshFavUI();
-}
+if (grid) grid.innerHTML = PRODUCTS.map(p => productCardHTML(p)).join('');
 
 // 行動版選單
 const menu = document.getElementById('menu');
@@ -25,9 +9,4 @@ document.getElementById('openMenu').onclick = () => menu.classList.add('open');
 document.getElementById('closeMenu').onclick = () => menu.classList.remove('open');
 menu.querySelectorAll('a').forEach(a => a.onclick = () => menu.classList.remove('open'));
 
-// 會員按鈕（依登入狀態顯示，點擊前往會員頁）
-updateAuthUI();
-
-addEventListener('keydown', e => {
-  if (e.key === 'Escape') { if (window.closeCartDrawer) closeCartDrawer(); menu.classList.remove('open'); }
-});
+addEventListener('keydown', e => { if (e.key === 'Escape') menu.classList.remove('open'); });

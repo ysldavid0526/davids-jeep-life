@@ -1,17 +1,14 @@
 /* product.js — 個別商品頁(product.html?id=DJ-XX)
-   依賴 store.js：PRODUCTS / findProduct / setupCart / addToCart / updateAuthUI / NT
+   依賴 store.js：findProduct / IG_ORDER
 */
-setupCart();
-updateAuthUI();
 
 // 行動版選單
 const menu = document.getElementById('menu');
 document.getElementById('openMenu').onclick = () => menu.classList.add('open');
 document.getElementById('closeMenu').onclick = () => menu.classList.remove('open');
 menu.querySelectorAll('a').forEach(a => a.onclick = () => menu.classList.remove('open'));
-addEventListener('keydown', e => { if (e.key === 'Escape') { if (window.closeCartDrawer) closeCartDrawer(); menu.classList.remove('open'); } });
+addEventListener('keydown', e => { if (e.key === 'Escape') menu.classList.remove('open'); });
 
-// 取得網址 ?id= 並帶出商品
 const id = new URLSearchParams(location.search).get('id');
 const p = findProduct(id);
 
@@ -30,7 +27,7 @@ if (!p) {
   document.getElementById('pdpPrice').innerHTML = '<span class="cur">NT$</span>' + p.price.toLocaleString('en-US');
   document.getElementById('pdpDesc').textContent = p.desc;
 
-  // 多角度圖：縮圖列（只有一張時不顯示）
+  // 多角度圖
   const gallery = (p.gallery && p.gallery.length ? p.gallery : [p.img]);
   const thumbs = document.getElementById('pdpThumbs');
   if (gallery.length > 1) {
@@ -62,47 +59,13 @@ if (!p) {
       `<tr><th>${k}</th><td>${v}</td></tr>`).join('');
   }
 
-  // 尺寸選擇（衣服類才有 sizes）
-  let selectedSize = '';
-  const hasSizes = p.sizes && p.sizes.length;
-  if (hasSizes) {
+  // 尺寸（僅顯示資訊；訂購時於私訊註明）
+  if (p.sizes && p.sizes.length) {
     document.getElementById('pdpSizeWrap').hidden = false;
-    const box = document.getElementById('pdpSizes');
-    box.innerHTML = p.sizes.map(s => `<button class="pdp-size-btn" data-size="${s}">${s}</button>`).join('');
-    box.addEventListener('click', e => {
-      const b = e.target.closest('.pdp-size-btn');
-      if (!b) return;
-      selectedSize = b.dataset.size;
-      box.querySelectorAll('.pdp-size-btn').forEach(x => x.classList.toggle('active', x === b));
-    });
+    document.getElementById('pdpSizes').innerHTML = p.sizes.map(s => `<span class="pdp-size-chip">${s}</span>`).join('');
   }
 
-  // 數量選擇
-  let qty = 1;
-  const qEl = document.getElementById('qty');
-  document.getElementById('qMinus').onclick = () => { if (qty > 1) { qty--; qEl.textContent = qty; } };
-  document.getElementById('qPlus').onclick = () => { qty++; qEl.textContent = qty; };
-  document.getElementById('pdpAdd').onclick = () => {
-    if (hasSizes && !selectedSize) { toast('請先選擇尺寸'); return; }
-    addToCart(p.id, qty, selectedSize);
-  };
-
-  // 收藏鈕（綁定此商品；點擊由 store.js 的全站委派處理）
-  const favBtn = document.getElementById('pdpFav');
-  if (favBtn) { favBtn.dataset.fav = p.id; refreshFavUI(); }
-
-  // 暫停營業：隱藏數量/尺寸/加入購物車，顯示提示（收藏仍可用）
-  if (typeof STORE_OPEN !== 'undefined' && !STORE_OPEN) {
-    const add = document.getElementById('pdpAdd'); if (add) add.style.display = 'none';
-    const q = document.querySelector('.pdp-qty'); if (q) q.style.display = 'none';
-    const sw = document.getElementById('pdpSizeWrap'); if (sw) sw.hidden = true;
-    const ship = document.querySelector('.pdp-ship'); if (ship) ship.style.display = 'none';
-    const actions = document.querySelector('.pdp-actions');
-    if (actions) {
-      const note = document.createElement('p');
-      note.className = 'pdp-closed';
-      note.textContent = '商店暫停營業中，商品僅供瀏覽，敬請期待 ☕';
-      actions.insertAdjacentElement('beforebegin', note);
-    }
-  }
+  // Instagram 私訊訂購
+  const ig = document.getElementById('pdpOrder');
+  if (ig) ig.href = IG_ORDER;
 }

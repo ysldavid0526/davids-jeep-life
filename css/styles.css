@@ -592,3 +592,12 @@
 
   @keyframes slowzoom{from{transform:scale(1)}to{transform:scale(1.12)}}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}.hero-bg img{animation:none}}
+
+  /* ── 私訊訂購（取代購物車）── */
+  .ig-order{cursor:pointer;font-weight:600;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);background:var(--sand);border:1px solid var(--sand);padding:10px 14px;border-radius:2px;transition:.2s;white-space:nowrap;text-decoration:none}
+  .ig-order:hover{background:#fff;border-color:#fff}
+  .ig-nav{display:inline-flex;align-items:center;text-decoration:none}
+  .pdp-order{display:inline-flex;align-items:center;gap:10px;max-width:340px;width:100%;justify-content:center;cursor:pointer;font-family:var(--head);font-size:21px;letter-spacing:.08em;color:var(--ink);background:var(--sand);border:none;padding:15px;border-radius:2px;transition:.2s;text-decoration:none}
+  .pdp-order:hover{background:#fff;transform:translateY(-2px)}
+  .pdp-order svg{width:22px;height:22px}
+  .pdp-size-chip{display:inline-block;font-size:13px;color:#e7e7e2;border:1px solid var(--line-strong);border-radius:3px;padding:7px 13px;margin:0 8px 8px 0}
