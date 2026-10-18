@@ -601,3 +601,9 @@
   .pdp-order:hover{background:#fff;transform:translateY(-2px)}
   .pdp-order svg{width:22px;height:22px}
   .pdp-size-chip{display:inline-block;font-size:13px;color:#e7e7e2;border:1px solid var(--line-strong);border-radius:3px;padding:7px 13px;margin:0 8px 8px 0}
+
+  /* 改裝詳細頁：條列式說明 */
+  .rig-bullets{list-style:none;padding:0;margin:14px 0 16px}
+  .rig-bullets li{display:flex;gap:12px;font-size:13.5px;color:#e7e7e2;padding:8px 0;border-bottom:1px solid var(--line);line-height:1.5}
+  .rig-bullets li span{flex:none;width:72px;color:var(--gray);font-size:11px;font-weight:600;letter-spacing:.06em}
+  .rig-bullets li em{font-style:normal}

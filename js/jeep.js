@@ -59,59 +59,45 @@ function renderMods() {
 function openDetail(pid) {
   const p = findBuild(pid); if (!p) return;
   const modal = document.getElementById('buildModal');
-  const photos = [p.photos.product, p.photos.installed, ...p.photos.detail];
-  const labels = ['原廠產品', '實車安裝'].concat(p.photos.detail.map((_, i) => '細節 ' + (i + 1)));
-  let startI = photos.findIndex(s => s && s.indexOf('/_real/') >= 0);
-  if (startI < 0) startI = 0;
-  const thumbs = photos.map((src, i) =>
-    `<button class="rig-thumb ${i === startI ? 'on' : ''}" data-i="${i}">${imgSlot(src, labels[i])}<span class="rig-thumb-lb">${labels[i]}</span></button>`).join('');
-  const specsRows = (p.specs && p.specs.length)
-    ? p.specs.map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')
-    : `<tr><th>技術規格</th><td class="rig-tbd">待確認</td></tr>`;
+  // 只用真實照片（實車照）；沒有就顯示單一佔位。一張大圖 + 右側條列說明。
+  const reals = [p.photos.product, p.photos.installed].concat(p.photos.detail)
+    .filter(s => s && s.indexOf('/_real/') >= 0);
+  const hero = reals[0] || p.photos.installed;
+  const canZoom = reals.length > 0;
   const offWeb = (p.official && p.official !== '待確認')
     ? `<a class="rig-offbtn" href="${esc(p.official)}" target="_blank" rel="noopener">VIEW OFFICIAL WEBSITE ↗</a>`
     : `<span class="rig-offbtn disabled">官方網站待確認</span>`;
-  const offProd = (p.officialProduct && p.officialProduct !== '待確認')
-    ? `<a class="rig-offbtn ghost" href="${esc(p.officialProduct)}" target="_blank" rel="noopener">VIEW PRODUCT ↗</a>` : '';
+  const specBullets = (p.specs && p.specs.length)
+    ? p.specs.map(([k, v]) => `<li><span>${esc(k)}</span>${esc(v)}</li>`).join('')
+    : `<li><span>技術規格</span><em class="rig-tbd">待確認</em></li>`;
   modal.innerHTML = `<div class="rig-modal-scrim"></div><div class="rig-modal-card">
     <button class="rig-modal-x" aria-label="關閉">×</button>
     <div class="rig-modal-grid">
       <div class="rig-modal-media">
-        <div class="rig-modal-main" id="rmMain">${imgSlot(photos[startI], p.product, 'rig-modal-mainimg')}</div>
-        <div class="rig-modal-thumbs">${thumbs}</div>
-        <p class="rig-modal-tip">點大圖可放大 · 支援全螢幕與滑動</p>
+        <div class="rig-modal-main" id="rmMain">${imgSlot(hero, p.product, 'rig-modal-mainimg')}</div>
+        <p class="rig-modal-tip">${canZoom ? '點圖可放大・全螢幕' : '實車照陸續補上'}</p>
       </div>
       <div class="rig-modal-info">
         <span class="rig-brand">${esc(p.brand)}</span>
         <h3>${esc(p.product)}</h3>
         <span class="rig-status ${statusClass(p.status)}">${esc(p.status)}</span>
+        <ul class="rig-bullets">
+          <li><span>品牌</span>${esc(p.brand)}</li>
+          <li><span>型號</span>${esc(p.model)}</li>
+          <li><span>類別</span>${esc(p.category)}</li>
+          <li><span>尺寸</span>${esc(p.dimensions)}</li>
+          <li><span>安裝狀態</span>${esc(p.status)}</li>
+          ${specBullets}
+        </ul>
         <p class="rig-desc">${esc(p.desc)}</p>
         ${p.note ? `<p class="rig-noteline">※ ${esc(p.note)}</p>` : ''}
-        <table class="rig-spec"><tbody>
-          <tr><th>品牌</th><td>${esc(p.brand)}</td></tr>
-          <tr><th>型號</th><td>${esc(p.model)}</td></tr>
-          <tr><th>類別</th><td>${esc(p.category)}</td></tr>
-          <tr><th>尺寸</th><td>${esc(p.dimensions)}</td></tr>
-          <tr><th>安裝狀態</th><td>${esc(p.status)}</td></tr>
-          ${specsRows}
-        </tbody></table>
-        <div class="rig-offrow">${offWeb}${offProd}</div>
+        <div class="rig-offrow">${offWeb}</div>
       </div>
     </div></div>`;
   modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
-
-  let curI = startI;
   const main = document.getElementById('rmMain');
-  const bindMain = () => { const im = main.querySelector('img'); if (im) im.onclick = () => openLightbox(photos, curI); };
-  const setMain = i => {
-    curI = i;
-    main.innerHTML = imgSlot(photos[i], labels[i], 'rig-modal-mainimg');
-    modal.querySelectorAll('.rig-thumb').forEach((t, ti) => t.classList.toggle('on', ti === i));
-    bindMain();
-  };
-  modal.querySelectorAll('.rig-thumb').forEach(t => t.onclick = () => setMain(+t.dataset.i));
-  bindMain();
+  if (canZoom) { const im = main.querySelector('img'); if (im) im.onclick = () => openLightbox(reals, 0); }
   modal.querySelector('.rig-modal-x').onclick = closeDetail;
   modal.querySelector('.rig-modal-scrim').onclick = closeDetail;
 }
