@@ -509,6 +509,17 @@
   .rig-status.on{color:#bfe3bf;background:rgba(90,170,90,.16);border:1px solid rgba(120,190,120,.4)}
   .rig-status.rec{color:#d8d8d3;background:rgba(255,255,255,.06);border:1px solid var(--line-strong)}
 
+  /* ── 改裝清單（極簡條列） ── */
+  .mod-cat{margin-bottom:40px}
+  .mod-cat-h{font-weight:700;font-size:12px;letter-spacing:.2em;color:var(--bred);border-bottom:1px solid var(--line);padding-bottom:10px;margin:0 0 18px}
+  .mod-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .mod-item{background:var(--char);border:1px solid var(--line);border-left:3px solid var(--bred);border-radius:8px;padding:16px 18px}
+  .mod-item-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
+  .mod-item .mod-brand{font-weight:700;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--bred)}
+  .mod-name{font-family:var(--head);font-weight:400;font-size:22px;line-height:1.05;margin:0 0 8px;color:#fff}
+  .mod-desc{font-size:13.5px;color:#cfcfca;line-height:1.75;margin:0}
+  .mod-note{font-size:12px;color:var(--bred);background:var(--bred-soft);border-radius:6px;padding:8px 11px;line-height:1.6;margin:10px 0 0}
+
   .ph{position:relative;background:#141414;overflow:hidden;display:block}
   .ph img{width:100%;height:100%;object-fit:cover;display:block}
   .ph-label{display:none}
@@ -571,6 +582,10 @@
     .rig-grid{grid-template-columns:repeat(2,1fr)}
     .rig-modal-grid{grid-template-columns:1fr}
     .rig-modal-media{border-right:none;border-bottom:1px solid var(--line)}
+  }
+  @media(max-width:600px){
+    .mod-list{grid-template-columns:1fr}
+    .mod-name{font-size:20px}
   }
   @media(max-width:600px){
     .rig-hero{height:72vh;min-height:420px}
