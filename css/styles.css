@@ -2,7 +2,7 @@
     --ink:#0d0d0d;--char:#161616;--char2:#1f1f1f;
     --olive:#4A5A3A;--olive-lift:#5E724A;--sand:#DCC9A3;--sand-deep:#C8B488;--white:#F5F5F5;--gray:#8a8a86;
     --line:rgba(245,245,245,.13);--line-strong:rgba(245,245,245,.24);
-    --head:'Bebas Neue',Impact,sans-serif;--body:'Montserrat',system-ui,sans-serif;
+    --head:'Bebas Neue',Impact,'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;--body:'Montserrat','Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth;background:var(--ink)}
